@@ -1,0 +1,80 @@
+body{
+    background: rgb(90,85,127) !important;
+    height: 100%;
+    padding: 0px;
+}
+
+.QuestionDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin:0px;
+    overflow: auto;
+}
+.QuestionContainer{
+    color: #fff !important;
+    /* background-color: #1e1e1e; */
+    /* background: linear-gradient(45deg, rgb(255, 170, 109), rgba(253, 179, 137, 0.223)); */
+    background: #fff;
+    background-color: #282727 !important;
+    /* background: linear-gradient(45deg, rgb(91 108 196), rgb(139 175 217)); */
+    font-size: large;
+    letter-spacing: 1px;
+
+}
+.codeContainer{
+    padding: 10px;
+}
+.codeContainer .bottom{
+    display: flex;
+    gap:10px;
+    justify-content: space-evenly;
+    /* flex-wrap: wrap; */
+}
+
+.codeContainer .bottom .output{
+    height:200px;
+    width: 400px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.395);
+    background-color: #1e1e1e;
+    padding: 10px;
+    color:lightgreen;
+    font-family: cursive;
+}
+.outputLoader{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.customInputs{
+    height:120px;
+    width: 380px;
+    margin:  10px 0px;
+}
+.textArea{
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 4px 4px 3px black;
+    outline: 0;
+    transition: all 1s;
+}
+.textArea:hover,.textArea:focus{
+    box-shadow:0px 0px 0px transparent;
+}
+
+.bottom .execute{
+    padding: 10px;
+    border-radius: 5px;
+    /* margin-top: 10px; */
+    box-shadow: 4px 4px 3px black;
+    cursor: pointer;
+    /* transition: all .7s; */
+}
+
+.bottom .execute:hover{
+    box-shadow:0px 0px 0px transparent;
+}
