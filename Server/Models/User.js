@@ -9,7 +9,14 @@ const userModel = new Schema({
 	},
 	password: {
 		type: String,
+	},
+	secret: {
+		type: String,
+	},
+	firstLogin: {
+		type: Boolean,
 		required: true,
+		default: false,
 	},
 });
 
