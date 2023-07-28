@@ -4,7 +4,6 @@ module.exports.login = async (req, res, next) => {
 	try {
 		const { username, password } = req.body;
 		const user = await userModel.findOne({ username });
-		console.log(user)
 		if (user.password === password && !user.firstLogin) {
 			user.firstLogin = true;
 			return res.status(200).json({
