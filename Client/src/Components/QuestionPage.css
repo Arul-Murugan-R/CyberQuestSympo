@@ -41,6 +41,9 @@ body {
 	color: lightgreen;
 	font-family: cursive;
 }
+.output.danger {
+	color: red !important;
+}
 .outputLoader {
 	display: flex;
 	justify-content: center;

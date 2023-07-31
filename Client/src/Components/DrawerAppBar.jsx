@@ -18,6 +18,8 @@ import Chip from "@mui/material/Chip";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../store/AuthStore";
+import { programAction } from "../store/ProgramStore";
+import { snackActions } from "../store/SnackStore";
 
 const drawerWidth = 240;
 const navItems = [{ id: 1, name: "Login", to: "login" }];
@@ -105,9 +107,16 @@ function DrawerAppBar(props) {
 									textDecoration: "none",
 									color: "#fff",
 								}}
-								onClick={() =>
-									dispatch(authActions.logoutHandler())
-								}
+								onClick={() => {
+									dispatch(authActions.logoutHandler());
+									dispatch(
+										snackActions.open({
+											content: "Logout Success",
+											type: "success",
+										})
+									);
+									dispatch(programAction.reset());
+								}}
 							>
 								Logout
 							</Link>
