@@ -3,15 +3,8 @@ import Editor from "@monaco-editor/react";
 import "./QuestionPage.css";
 
 const CodeEditorWindow = ({ onChange, language, code, theme }) => {
-	const [value, setValue] = useState(code || "");
-	// console.log(theme)
-	// useEffect(() => {
-	//   compileCode(value);
-	// }, []);
-	console.log(code);
-
+	
 	const handleEditorChange = (value) => {
-		setValue(value);
 		onChange(value);
 	};
 
@@ -20,7 +13,7 @@ const CodeEditorWindow = ({ onChange, language, code, theme }) => {
 			<Editor
 				height={"75vh"}
 				language={language || "javascript"}
-				value={value}
+				value={code}
 				theme={"vs-dark"}
 				onChange={handleEditorChange}
 				sx={{ borderRadius: "50px" }}

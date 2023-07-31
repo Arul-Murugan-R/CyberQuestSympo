@@ -5,8 +5,10 @@ import { languageOptions } from "../data";
 import { Select, MenuItem, CircularProgress } from "@mui/material";
 import monacoThemes from "monaco-themes/themes/themelist";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
+import { programAction } from "../store/ProgramStore";
+import { snackActions } from "../store/SnackStore";
 
 let timer = setTimeout(() => null, 1000);
 
@@ -14,28 +16,53 @@ export default function QuestionPage() {
 	const isLoggedin = useSelector((state) => state.auth.isLoggedIn);
 	const userId = useSelector((state) => state.auth.teamId);
 	const { id: questionNo } = useParams();
+	const dispatch = useDispatch()
 	const navigate = useNavigate();
-	const [actualCode, setActualCode] = useState("");
-	const programs = useSelector((state) => state.programs);
-
-	useEffect(() => {
-		if (!isLoggedin) {
-			return navigate("/login");
+	useEffect(()=>{
+		if(questionNo<0||questionNo>6)
+		{	
+			dispatch(snackActions.open({
+				content:'Question Comprises of 1-6',
+				type:'error'
+			}))
+			navigate('/')
 		}
-		console.log(programs);
+	},[])
+	const programs = useSelector((state) => state.programs);
+	const loadCode = ()=>{
+		let convert
 		const result = programs.find(
 			(program) => program.questionNo === questionNo
 		);
 		if (result) {
-			console.log(result.content);
-			setActualCode(result.content);
+			// console.log(result.content);
+		 convert = JSON.parse(result.content)
+		 let language = result.language
+		 const filteredCodeId = languageOptions.find(
+			(lang) => lang.value == language
+		).compiler;
+		 return {convert,language,filteredCodeId}
+		}else{
+			return {convert:"",language:"javascript",filteredCodeId:"17"}
 		}
-	}, [isLoggedin, programs, actualCode]);
 
-	const [language, setLanguage] = useState("javascript");
-	const [compilerId, setCompilerId] = useState("17");
+	}
+	
+	const [actualCode, setActualCode] = useState(loadCode().convert);
+	const [language, setLanguage] = useState(loadCode().language);
+	const [compilerId, setCompilerId] = useState(loadCode().filteredCodeId);
+	useEffect(() => {
+		if (!isLoggedin) {
+			return navigate("/login");
+		}
+		setActualCode(loadCode().convert)
+		setLanguage(loadCode().language)
+		setCompilerId(loadCode().filteredCodeId)
+	}, [isLoggedin, programs]);
+
 	const [compiledCode, setCompiledCode] = useState("");
 	const [loader, setLoader] = useState(false);
+	const [sampleInput,setSampleInput] = useState('')
 	const [compileError, setCompileError] = useState();
 
 	// const [theme,setTheme] = useState("Cobalt")
@@ -47,29 +74,41 @@ export default function QuestionPage() {
 		setLanguage(event.target.value);
 		setCompilerId(filteredLanguage.compiler);
 	};
+	const inputChangeHandler = (event)=>{
+		setSampleInput(event.target.value)
+	}
 	// const themeChangeHandler = (event) =>{
 	//   console.log(event.target.value)
 	//   setTheme(event.target.value)
 	// }
+
+	const backendSaver = async (value)=>{
+		const result = await axios.post(
+			import.meta.env.VITE_BACKEND_URL + "/program/save",
+			{
+				userId,
+				questionNo,
+				content: JSON.stringify(value),
+				language
+			}
+		);
+			if(result.status == 201){
+				console.log(result.data.program)
+			dispatch(programAction.updateProgram(result.data.program))
+		}
+	}
 
 	const actualCodeHandler = (value) => {
 		setActualCode(value);
 
 		clearTimeout(timer);
 		timer = setTimeout(async () => {
-			console.log(userId, questionNo);
-			const result = await axios.post(
-				import.meta.env.VITE_BACKEND_URL + "/program/save",
-				{
-					userId,
-					questionNo,
-					content: JSON.stringify(value),
-				}
-			);
-			console.log(result.data);
+			// console.log(userId, questionNo);
+			backendSaver(value)
+			// console.log(result.data);
 		}, 5000);
 	};
-	const compileCode = async (sourceCode) => {
+	const compileCode = async () => {
 		setCompiledCode("");
 		setCompileError(null);
 		setLoader(true);
@@ -85,6 +124,7 @@ export default function QuestionPage() {
 				LanguageChoice: compilerId + "" || "5",
 				Program:
 					actualCode || 'print("Hello World!, on python language")',
+				Input:sampleInput.split(',')
 			}),
 		};
 		// console.log(compilerId,actualCode)
@@ -155,6 +195,7 @@ export default function QuestionPage() {
 							language={language || "javascript"}
 							onChange={actualCodeHandler}
 							code={actualCode}
+							// initialFetch={loadCode}
 						/>
 						<div>
 							<h3>Output</h3>
@@ -179,6 +220,7 @@ export default function QuestionPage() {
 								<textarea
 									className="textArea"
 									placeholder="Custom Inputs"
+									onChange={inputChangeHandler}
 								></textarea>
 							</div>
 							<button className="execute" onClick={compileCode}>

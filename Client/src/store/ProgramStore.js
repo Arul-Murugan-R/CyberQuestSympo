@@ -12,7 +12,7 @@ const ProgramSlice = createSlice({
 			return allPrograms;
 		},
 		updateProgram(state, action) {
-			const { questionNo, userId, program: content } = action.payload;
+			const { questionNo, userId, content } = action.payload;
 			const unChangedArray = state.filter(
 				(item) =>
 					item.userId !== userId && item.questionNo !== questionNo
