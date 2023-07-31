@@ -10,7 +10,7 @@
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	background: linear-gradient(30deg, rgb(73 69 107), rgb(97 92 136));
+	background: radial-gradient(30deg, rgb(73 69 107), rgb(97 92 136));
 	padding: 0px;
 	margin: 0px;
 }
@@ -125,9 +125,12 @@
 	color: rgb(255, 255, 255);
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1350px) {
 	.service {
 		width: 340px;
 		height: 220px;
+	}
+	.services{
+		padding: 10px;
 	}
 }
