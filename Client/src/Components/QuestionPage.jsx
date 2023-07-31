@@ -21,6 +21,7 @@ export default function QuestionPage() {
 	const [compiledCode, setCompiledCode] = useState("");
 	const [actualCode, setActualCode] = useState("");
 	const [loader, setLoader] = useState(false);
+	const [sampleInput,setSampleInput] = useState('')
 
 	// const [theme,setTheme] = useState("Cobalt")
 	const handleSelector = async (event) => {
@@ -31,6 +32,9 @@ export default function QuestionPage() {
 		setLanguage(event.target.value);
 		setCompilerId(filteredLanguage.compiler);
 	};
+	const inputChangeHandler = (event)=>{
+		setSampleInput(event.target.value)
+	}
 	// const themeChangeHandler = (event) =>{
 	//   console.log(event.target.value)
 	//   setTheme(event.target.value)
@@ -54,6 +58,7 @@ export default function QuestionPage() {
 				LanguageChoice: compilerId + "" || "5",
 				Program:
 					actualCode || 'print("Hello World!, on python language")',
+				Input:sampleInput.split(',')
 			}),
 		};
 		// console.log(compilerId,actualCode)
@@ -137,6 +142,7 @@ export default function QuestionPage() {
 								<textarea
 									className="textArea"
 									placeholder="Custom Inputs"
+									onChange={inputChangeHandler}
 								></textarea>
 							</div>
 							<button className="execute" onClick={compileCode}>

@@ -24,6 +24,13 @@ const CodeEditorWindow = ({ onChange, language, code, theme }) => {
 				onChange={handleEditorChange}
 				sx={{ borderRadius: "50px" }}
 				className="editor"
+				options={{
+					// You can also provide other options for the editor
+					fontSize: 20,
+					minimap: {
+					  enabled: true,
+					},
+				  }}
 			/>
 		</div>
 	);
