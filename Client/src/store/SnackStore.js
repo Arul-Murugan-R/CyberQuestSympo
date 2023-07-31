@@ -19,7 +19,11 @@ const SnackSlice = createSlice({
 			};
 		},
 		close(state, action) {
-			return initialState;
+			return {
+				visible: false,
+				content: "None",
+				type: "success",
+			};
 		},
 	},
 });

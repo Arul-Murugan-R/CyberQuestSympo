@@ -6,22 +6,38 @@ import { Select, MenuItem, CircularProgress } from "@mui/material";
 import monacoThemes from "monaco-themes/themes/themelist";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
+
+let timer = setTimeout(() => null, 1000);
 
 export default function QuestionPage() {
 	const isLoggedin = useSelector((state) => state.auth.isLoggedIn);
+	const userId = useSelector((state) => state.auth.teamId);
+	const { id: questionNo } = useParams();
 	const navigate = useNavigate();
+	const [actualCode, setActualCode] = useState("");
+	const programs = useSelector((state) => state.programs);
+
 	useEffect(() => {
 		if (!isLoggedin) {
 			return navigate("/login");
 		}
-	}, [isLoggedin]);
+		console.log(programs);
+		const result = programs.find(
+			(program) => program.questionNo === questionNo
+		);
+		if (result) {
+			console.log(result.content);
+			setActualCode(result.content);
+		}
+	}, [isLoggedin, programs, actualCode]);
+
 	const [language, setLanguage] = useState("javascript");
 	const [compilerId, setCompilerId] = useState("17");
 	const [compiledCode, setCompiledCode] = useState("");
-	const [actualCode, setActualCode] = useState("");
 	const [loader, setLoader] = useState(false);
 	const [sampleInput,setSampleInput] = useState('')
+	const [compileError, setCompileError] = useState();
 
 	// const [theme,setTheme] = useState("Cobalt")
 	const handleSelector = async (event) => {
@@ -42,9 +58,24 @@ export default function QuestionPage() {
 
 	const actualCodeHandler = (value) => {
 		setActualCode(value);
+
+		clearTimeout(timer);
+		timer = setTimeout(async () => {
+			console.log(userId, questionNo);
+			const result = await axios.post(
+				import.meta.env.VITE_BACKEND_URL + "/program/save",
+				{
+					userId,
+					questionNo,
+					content: JSON.stringify(value),
+				}
+			);
+			console.log(result.data);
+		}, 5000);
 	};
 	const compileCode = async (sourceCode) => {
 		setCompiledCode("");
+		setCompileError(null);
 		setLoader(true);
 		const url = import.meta.env.VITE_RAPID_API_URL;
 		const options = {
@@ -65,13 +96,17 @@ export default function QuestionPage() {
 
 		try {
 			const response = await fetch(url, options);
-			console.log(response);
+			// console.log(response);
 			const result = await response.json();
 			console.log(result);
+			if (result.Errors) {
+				console.log(result.Errors);
+				throw new Response(result.Errors);
+			}
 			setCompiledCode(result.Result);
 			setLoader(false);
 		} catch (error) {
-			console.error(error);
+			setCompileError(`Something went wrong\n`);
 			setLoader(false);
 		}
 	};
@@ -124,13 +159,20 @@ export default function QuestionPage() {
 						<CodeEditorWindow
 							language={language || "javascript"}
 							onChange={actualCodeHandler}
+							code={actualCode}
 						/>
 						<div>
 							<h3>Output</h3>
 							<div
-								className={`output ${loader && "outputLoader"}`}
+								className={`output ${
+									loader && "outputLoader"
+								} ${compileError && "danger"}`}
 							>
-								{compiledCode}
+								{compileError}
+								{!compileError &&
+									compiledCode.split("\n").map((text) => {
+										return <div>{text}</div>;
+									})}
 								{loader && (
 									<CircularProgress
 										size={100}

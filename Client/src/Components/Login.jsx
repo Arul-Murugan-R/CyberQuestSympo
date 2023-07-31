@@ -14,6 +14,9 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../store/AuthStore";
 import { useNavigate } from "react-router";
+import { programAction } from "../store/ProgramStore";
+import CustomSnackbar from "./UI/CustomSnackBar";
+import { snackActions } from "../store/SnackStore";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function Login() {
@@ -33,6 +36,8 @@ export default function Login() {
 		console.log(userState);
 	};
 
+	const snackOpen = useSelector((state) => state.snackbar.visible);
+
 	const loginHandler = async (event) => {
 		try {
 			event.preventDefault();
@@ -43,7 +48,21 @@ export default function Login() {
 			});
 			console.log(response.data);
 			const user = response.data.user;
+			const result = await axios.post(backendUrl + "/program/getall", {
+				userId: user._id,
+			});
+			console.log(result.data.programs);
+			if (result.status === 200)
+				dispatch(
+					programAction.saveAll({ allPrograms: result.data.programs })
+				);
 			dispatch(authActions.loginHandler({ user: user }));
+			dispatch(
+				snackActions.open({
+					content: "Login succcess!",
+					type: "success",
+				})
+			);
 			setUserState({
 				teamName: "",
 				password: "",

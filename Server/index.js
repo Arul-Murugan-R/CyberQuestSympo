@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const UserRoutes = require("./Routes/User");
+const ProgramRoutes = require("./Routes/Program");
 
 const app = express();
 app.use(express.json());
@@ -15,13 +16,14 @@ app.use((req, res, next) => {
 });
 
 const url = process.env.DB_URL || "mongodb://localhost:27017/cyberquest";
+
 mongoose
 	.connect(url)
 	.then(() => {
 		console.log("MONGO CONNECTION OPEN!!!");
-		app.listen(8080,()=>{
-			console.log("Listening to http://localhost:8080")
-		})
+		app.listen(8080, () => {
+			console.log("Listening to http://localhost:8080");
+		});
 	})
 	.catch((err) => {
 		console.log("OH NO MONGO ERROR!!!!");
@@ -29,8 +31,10 @@ mongoose
 	});
 
 app.use("/user", UserRoutes);
-app.use('/',(req,res)=>{
+app.use("/program", ProgramRoutes);
+
+app.use("/", (req, res) => {
 	res.status(200).json({
-		message:'Things are working fine'
-	})
-})
+		message: "Things are working fine",
+	});
+});

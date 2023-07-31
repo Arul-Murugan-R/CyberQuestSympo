@@ -8,6 +8,7 @@ const CodeEditorWindow = ({ onChange, language, code, theme }) => {
 	// useEffect(() => {
 	//   compileCode(value);
 	// }, []);
+	console.log(code);
 
 	const handleEditorChange = (value) => {
 		setValue(value);
