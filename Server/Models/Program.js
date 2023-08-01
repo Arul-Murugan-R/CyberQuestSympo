@@ -9,6 +9,16 @@ const Program = new Schema({
 	content: {
 		type: String,
 	},
+	questionNo: {
+		type: String,
+		required: true,
+	},
+	language:{
+		type:String,
+	},
+	compilerId:{
+		type:String,
+	}
 });
 
 module.exports = mongoose.model("Program", Program);

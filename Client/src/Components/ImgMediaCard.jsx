@@ -43,11 +43,12 @@ function ImgMediaCardCust (){
 			{Array.from(Array(6),(e,i)=>{
 			return <div className={`service service${i+1}`} onClick={()=>{return navigate('/question/'+(i+1))}} key={i}>
 				<div className="front">
-					<h4>Question {i+1}</h4>
+					<h4>Clue {i+1}</h4>
 				</div>
 				<div className="back">
-					<h3>Question {i+1}</h3>
-					<p>Concatenate two strings</p>
+					<h3>Clue {i+1}</h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+					 Minus eaque deserunt ipsum consectetur assumenda ducimus</p>
 				</div>
 			</div>
 			})}

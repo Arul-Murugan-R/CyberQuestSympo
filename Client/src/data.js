@@ -288,3 +288,58 @@ export const languageOptions = [
     //   value: "vbnet",
     // },
   ];
+  
+
+  export const langOptions2 = [{
+    label: "PHP",
+    value: "php",
+  },
+  {
+    label: "Python",
+    value: "python",
+  },
+  {
+    label: "C++",
+    value: "c_cpp",
+  },
+  {
+    label: "C#",
+    value: "csharp",
+  },
+  {
+    label: "Kotlin",
+    value: "kotlin",
+  },
+  {
+    label: "Go",
+    value: "golang",
+  },
+  {
+    label: "R",
+    value: "r",
+  },
+  {
+    label: "Java",
+    value: "java",
+  },
+  {
+    label: "Typescript",
+    value: "typescript",
+  },
+  {
+    label: "Node.js",
+    value: "nodejs",
+  },
+  {
+    label: "Ruby",
+    value: "ruby",
+  },
+  {
+    label: "Perl",
+    value: "perl",
+  },
+  {
+    label: "Swift",
+    value: "swift",
+  },
+]
