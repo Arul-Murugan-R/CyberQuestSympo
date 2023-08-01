@@ -263,19 +263,19 @@ export default function QuestionPage() {
 					"fortran",
 					"bash",
 				],
-				lang: "python",
-				code: 'print("Hello world")',
-				input: "",
-				// lang: language,
-				// code: actualCode,
-				// input: '"hello"',
-				// sampleInput.length > 0 ? sampleInput : question.sampleInput,
+				// lang: "python",
+				// code: 'print("Hello world")',
+				// input: "",
+				lang: "c_cpp",
+				code: actualCode,
+				input:
+					sampleInput.length > 0 ? sampleInput : question.sampleInput,
 			},
 		};
 
 		try {
 			const response = await axios.request(opt);
-			console.log(response);
+			console.log(response.data.output);
 		} catch (error) {
 			console.error(error);
 		}
