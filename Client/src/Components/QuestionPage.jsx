@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./QuestionPage.css";
 import CodeEditorWindow from "./CodeEditorWindow";
-import { languageOptions } from "../data";
+import { langOptions2, languageOptions } from "../data";
 import { Select, MenuItem, CircularProgress } from "@mui/material";
 import monacoThemes from "monaco-themes/themes/themelist";
 import axios from "axios";
@@ -44,7 +44,7 @@ export default function QuestionPage() {
 		} else {
 			return {
 				convert: "",
-				language: "javascript",
+				language: "python",
 				filteredCodeId: "17",
 			};
 		}
@@ -73,7 +73,7 @@ export default function QuestionPage() {
 	const [compileError, setCompileError] = useState();
 
 	const handleSelector = (event) => {
-		const filteredLanguage = languageOptions.find(
+		const filteredLanguage = langOptions2.find(
 			(lang) => lang.value == event.target.value
 		);
 		setLanguage(event.target.value);
@@ -245,28 +245,7 @@ export default function QuestionPage() {
 				"X-RapidAPI-Host": "code-compiler10.p.rapidapi.com",
 			},
 			data: {
-				langEnum: [
-					"php",
-					"python",
-					"c",
-					"c_cpp",
-					"csharp",
-					"kotlin",
-					"golang",
-					"r",
-					"java",
-					"typescript",
-					"nodejs",
-					"ruby",
-					"perl",
-					"swift",
-					"fortran",
-					"bash",
-				],
-				// lang: "python",
-				// code: 'print("Hello world")',
-				// input: "",
-				lang: "c_cpp",
+				lang: language,
 				code: actualCode,
 				input:
 					sampleInput.length > 0 ? sampleInput : question.sampleInput,
@@ -275,7 +254,8 @@ export default function QuestionPage() {
 
 		try {
 			const response = await axios.request(opt);
-			console.log(response.data.output);
+			setCompiledCode(response.data.output);
+			setLoader(false)
 		} catch (error) {
 			console.error(error);
 		}
@@ -307,10 +287,10 @@ export default function QuestionPage() {
 								},
 							}}
 						>
-							{languageOptions.map((lang) => {
+							{langOptions2.map((lang) => {
 								return (
-									<MenuItem value={lang.value} id={lang.id}>
-										{lang.value}
+									<MenuItem value={lang.value} id={lang.value}>
+										{lang.label}
 									</MenuItem>
 								);
 							})}
