@@ -8,16 +8,19 @@ const ProgramSlice = createSlice({
 	reducers: {
 		saveAll(state, action) {
 			const { allPrograms } = action.payload;
-			console.log(allPrograms);
 			return allPrograms;
 		},
 		updateProgram(state, action) {
-			const { questionNo, userId, content, language,compilerId } = action.payload;
+			const { questionNo, userId, content, language, compilerId } =
+				action.payload;
 			const unChangedArray = state.filter(
 				(item) =>
 					item.userId !== userId && item.questionNo !== questionNo
 			);
-			return [...unChangedArray, { questionNo, userId, content,compilerId,language }];
+			return [
+				...unChangedArray,
+				{ questionNo, userId, content, compilerId, language },
+			];
 		},
 		reset(state, action) {
 			return [];

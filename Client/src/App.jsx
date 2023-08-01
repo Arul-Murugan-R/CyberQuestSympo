@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomSnackbar from "./Components/UI/CustomSnackBar";
 import axios from "axios";
 import { programAction } from "./store/ProgramStore";
+import { hintActions } from "./store/HintStore";
 
 const router = createBrowserRouter([
 	{
@@ -64,10 +65,19 @@ function App() {
 			);
 	};
 
+	const getHintsFound = async (userId) => {
+		const result = await axios.post(backendUrl + "/user/gethints", {
+			userId,
+		});
+		if (result.status === 200)
+			dispatch(hintActions.setHints({ hints: result.data.hints }));
+	};
+
 	if (initial) {
 		dispatch(authActions.setState());
 		const userId = useSelector((state) => state.auth.teamId);
 		getprogs(userId);
+		getHintsFound(userId);
 
 		initial = false;
 	}

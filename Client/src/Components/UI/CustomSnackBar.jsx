@@ -33,7 +33,7 @@ const CustomSnackbar = (props) => {
 			{createPortal(
 				<Snackbar
 					open={open}
-					autoHideDuration={5000}
+					autoHideDuration={2500}
 					onClose={handleClose}
 					action={action}
 				>

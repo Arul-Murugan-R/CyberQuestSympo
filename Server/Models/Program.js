@@ -13,12 +13,9 @@ const Program = new Schema({
 		type: String,
 		required: true,
 	},
-	language:{
-		type:String,
+	language: {
+		type: String,
 	},
-	compilerId:{
-		type:String,
-	}
 });
 
 module.exports = mongoose.model("Program", Program);

@@ -31,6 +31,23 @@ body {
 	/* flex-wrap: wrap; */
 }
 
+.output {
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+.output::-webkit-scrollbar {
+	width: 8px;
+}
+
+.output::-webkit-scrollbar-track {
+	border-radius: 4px;
+}
+
+.output::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+}
+
 .codeContainer .bottom .output {
 	height: 200px;
 	width: 400px;
@@ -53,7 +70,7 @@ body {
 .customInputs {
 	height: 120px;
 	width: 380px;
-	margin:15px 0px;
+	margin: 15px 0px;
 }
 .textArea {
 	width: 100% !important;

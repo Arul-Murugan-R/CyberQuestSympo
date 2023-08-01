@@ -10,8 +10,23 @@ import { useNavigate, useParams } from "react-router";
 import { programAction } from "../store/ProgramStore";
 import { snackActions } from "../store/SnackStore";
 import { questionsData } from "../QuestionData";
+import QuestionTemplate from "./QuestionTemplate";
+import { hintActions } from "../store/HintStore";
 
 let timer = setTimeout(() => null, 1000);
+const serverUrl = import.meta.env.VITE_BACKEND_URL;
+
+const options = {
+	method: "POST",
+	url: import.meta.env.VITE_RAPID_API_URL,
+	headers: {
+		"content-type": "application/json",
+		"x-compile": "rapidapi",
+		"Content-Type": "application/json",
+		"X-RapidAPI-Key": import.meta.env.VITE_RAPID_API_KEY,
+		"X-RapidAPI-Host": import.meta.env.VITE_RAPID_API_HOST,
+	},
+};
 
 export default function QuestionPage() {
 	const isLoggedin = useSelector((state) => state.auth.isLoggedIn);
@@ -19,6 +34,7 @@ export default function QuestionPage() {
 	const { id: questionNo } = useParams();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
 	useEffect(() => {
 		if (questionNo < 0 || questionNo > 6) {
 			dispatch(
@@ -30,7 +46,9 @@ export default function QuestionPage() {
 			navigate("/");
 		}
 	}, []);
+
 	const programs = useSelector((state) => state.programs);
+
 	const loadCode = () => {
 		let convert;
 		const result = programs.find(
@@ -49,10 +67,17 @@ export default function QuestionPage() {
 			};
 		}
 	};
+
 	const { convert, language: languageInitial, filteredCodeId } = loadCode();
+
 	const [actualCode, setActualCode] = useState(convert);
 	const [language, setLanguage] = useState(languageInitial);
 	const [compilerId, setCompilerId] = useState(filteredCodeId);
+	const [compiledCode, setCompiledCode] = useState("");
+	const [loader, setLoader] = useState(false);
+	const [sampleInput, setSampleInput] = useState("");
+	const [compileError, setCompileError] = useState();
+	const question = questionsData[questionNo - 1];
 
 	useEffect(() => {
 		if (!isLoggedin) {
@@ -67,11 +92,6 @@ export default function QuestionPage() {
 		setCompilerId(filteredCodeId);
 	}, [programs]);
 
-	const [compiledCode, setCompiledCode] = useState("");
-	const [loader, setLoader] = useState(false);
-	const [sampleInput, setSampleInput] = useState("");
-	const [compileError, setCompileError] = useState();
-
 	const handleSelector = (event) => {
 		const filteredLanguage = langOptions2.find(
 			(lang) => lang.value == event.target.value
@@ -83,91 +103,6 @@ export default function QuestionPage() {
 	const inputChangeHandler = (event) => {
 		setSampleInput(event.target.value);
 	};
-
-	const question = questionsData[questionNo - 1];
-
-	const sampleTemplateForQuestion = (
-		<div style={{ padding: 30 }}>
-			<h3>{question.title}</h3>
-			<p>
-				Description: <br />
-				{question.description.split(".").map((text) => {
-					return (
-						<>
-							{text.trim()}. <br />
-						</>
-					);
-				})}
-			</p>
-			<div
-				style={{
-					background: "#343434",
-					padding: 15,
-					margin: "20px 0px",
-				}}
-			>
-				Example :<br />
-				<pre style={{ color: "#ccc" }} key={question.no}>
-					Sample Input : {question.sampleInput}
-					<br />
-					Sample Output : {question.sampleOutput}
-					<br />
-					<br />
-					Explaination :<br />
-					<ul style={{ marginLeft: "1rem" }}>
-						{question.explanation.split(".").map((text) => {
-							return (
-								<li>
-									{text.trim()}. <br />
-								</li>
-							);
-						})}
-					</ul>
-				</pre>
-			</div>
-			Input Format
-			<br />
-			<br />
-			A string as a input
-			<br />
-			<br />
-			Constraints
-			<br />
-			<br />
-			{`1 <= s.length <= 104`}
-			<br />
-			{`1 <= words.length <= 5000`}
-			<br />
-			{`1 <= words[i].length <= 30`}
-			<br />
-			{`s and words[i] consist of lowercase English letters.`}
-			<br />
-			<br />
-			Sample Input 0<br />
-			<div style={{ background: "#343434", padding: 10 }}>
-				<pre style={{ color: "#ccc" }}>
-					5<br />
-					5<br />
-					1 0 1<br />
-					1 0 2<br />
-					1 2 7<br />
-					2 2 0<br />
-					3 0<br />
-				</pre>
-			</div>
-			Explanation 0<br />
-			<br />
-			There are shelves and requests, or queries.
-			<br />
-			- 1 Place a page book at the end of shelf .<br />
-			- 2 Place a page book at the end of shelf .<br />
-			- 3 Place a page book at the end of shelf .<br />
-			- 4 The number of pages in the book on the shelf is 78.
-			<br />
-			- 5 The number of books on the shelf is 2.
-			<br />
-		</div>
-	);
 
 	const backendSaver = async (value) => {
 		const result = await axios.post(
@@ -204,61 +139,58 @@ export default function QuestionPage() {
 		setCompiledCode("");
 		setCompileError(null);
 		setLoader(true);
-		const url = import.meta.env.VITE_RAPID_API_URL;
-		const options = {
-			method: "POST",
-			headers: {
-				"content-type": "application/x-www-form-urlencoded",
-				"X-RapidAPI-Key": import.meta.env.VITE_RAPID_API_KEY,
-				"X-RapidAPI-Host": import.meta.env.VITE_RAPID_API_HOST,
-			},
-			body: new URLSearchParams({
-				LanguageChoice: compilerId || "5",
-				Program: actualCode,
-				Input:
-					sampleInput.length > 0 ? sampleInput : question.sampleInput,
-			}),
+		options.data = {
+			lang: language,
+			code: actualCode,
+			input: sampleInput.length > 0 ? sampleInput : question.sampleInput,
 		};
 
-		// try {
-		// const response = await fetch(url, options);
-		// 	const result = await response.json();
-		// 	if (result.Errors) {
-		// 		throw result.Errors;
-		// 	}
-		// 	setCompiledCode(result.Result);
-		// 	setLoader(false);
-		// } catch (error) {
-		// 	setLoader(false);
-		// 	setCompileError(error);
-		// }
-
-		const opt = {
-			method: "POST",
-			url: "https://code-compiler10.p.rapidapi.com/",
-			headers: {
-				"content-type": "application/json",
-				"x-compile": "rapidapi",
-				"Content-Type": "application/json",
-				"X-RapidAPI-Key":
-					"ce7069d57cmsh0dc0f1006acffdbp1b7302jsn0e54f71632f7",
-				"X-RapidAPI-Host": "code-compiler10.p.rapidapi.com",
-			},
-			data: {
-				lang: language,
-				code: actualCode,
-				input:
-					sampleInput.length > 0 ? sampleInput : question.sampleInput,
-			},
-		};
+		if (language === "c") {
+			options.url = import.meta.env.VITE_C_COMPILER_URL;
+			options.headers["X-RapidAPI-Host"] =
+				import.meta.env.VITE_C_COMPILER_HOST;
+			options.data.language = language;
+		}
 
 		try {
-			const response = await axios.request(opt);
+			const response = await axios.request(options);
 			setCompiledCode(response.data.output);
-			setLoader(false)
+			setLoader(false);
 		} catch (error) {
-			console.error(error);
+			setCompileError(error.data.error || "Something went wrong!");
 		}
+		setLoader(false);
+	};
+
+	const submitCode = async () => {
+		setCompiledCode("");
+		setLoader(true);
+		setCompileError(null);
+		try {
+			const response = await axios.post(serverUrl + "/program/submit", {
+				language,
+				code: actualCode,
+				questionNo,
+				userId,
+			});
+
+			if (response.status === 200 || response.status === 202)
+				setCompiledCode(response.data.message);
+			if (response.status === 200)
+				dispatch(
+					hintActions.addHint({
+						hint: response.data.hint,
+						questionNo: response.data.questionNo,
+					})
+				);
+			else if (response.status === 201)
+				setCompileError(response.data.message);
+		} catch (e) {
+			dispatch(
+				snackActions.open({ content: "Error occured!", type: "error" })
+			);
+		}
+
 		setLoader(false);
 	};
 
@@ -266,7 +198,7 @@ export default function QuestionPage() {
 		<>
 			<div className="QuestionDiv">
 				<div className="QuestionContainer">
-					{sampleTemplateForQuestion}
+					<QuestionTemplate question={question} />
 				</div>
 				<div className="codeContainer">
 					<div className="top">
@@ -289,7 +221,11 @@ export default function QuestionPage() {
 						>
 							{langOptions2.map((lang) => {
 								return (
-									<MenuItem value={lang.value} id={lang.value}>
+									<MenuItem
+										value={lang.value}
+										id={lang.value}
+										key={lang.value}
+									>
 										{lang.label}
 									</MenuItem>
 								);
@@ -311,9 +247,15 @@ export default function QuestionPage() {
 							>
 								{compileError}
 								{!compileError &&
-									compiledCode.split("\n").map((text) => {
-										return <div>{text}</div>;
-									})}
+									compiledCode
+										.split("\n")
+										.map((text, index) => {
+											return (
+												<div key={`t${index}`}>
+													{text}
+												</div>
+											);
+										})}
 								{loader && (
 									<CircularProgress
 										size={100}
@@ -325,13 +267,23 @@ export default function QuestionPage() {
 								<textarea
 									className="textArea"
 									placeholder="Custom Inputs"
-									onChange={inputChangeHandler}
+									onBlur={inputChangeHandler}
 								></textarea>
 							</div>
-							<button className="execute" onClick={compileCode}>
+							<button
+								className="execute"
+								onClick={compileCode}
+								disabled={loader}
+							>
 								Compile And Execute
 							</button>
-							<button className="execute">Submit</button>
+							<button
+								className="execute"
+								onClick={submitCode}
+								disabled={loader}
+							>
+								Submit
+							</button>
 						</div>
 					</div>
 				</div>

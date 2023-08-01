@@ -42,3 +42,17 @@ module.exports.logout = (req, res, next) => {
 		});
 	}
 };
+
+module.exports.getHints = async (req, res, next) => {
+	const { userId } = req.body;
+	try {
+		const user = await userModel.findById(userId);
+		if (user.hintsFound.length > 0)
+			return res.status(200).json({
+				hints: user.hintsFound,
+			});
+		return res.status(201).json({
+			message: "No hints found",
+		});
+	} catch (e) {}
+};

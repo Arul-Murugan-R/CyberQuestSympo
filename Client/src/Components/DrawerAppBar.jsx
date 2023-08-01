@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../store/AuthStore";
 import { programAction } from "../store/ProgramStore";
 import { snackActions } from "../store/SnackStore";
+import ViewHints from "./UI/CustomModal";
 
 const drawerWidth = 240;
 const navItems = [{ id: 1, name: "Login", to: "login" }];
@@ -83,9 +84,12 @@ function DrawerAppBar(props) {
 						}}
 					>
 						<Typography variant="h6" component="div">
-							CyberQuests
+							CyberQuest
 						</Typography>
 					</Link>
+					<Box sx={{ mr: 3 }}>
+						<ViewHints />
+					</Box>
 					<Box sx={{ display: { xs: "none", sm: "block" } }}>
 						{!isLoggedin ? (
 							navItems.map((item) => (

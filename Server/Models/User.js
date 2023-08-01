@@ -18,6 +18,7 @@ const userModel = new Schema({
 		required: true,
 		default: false,
 	},
+	hintsFound: [],
 });
 
 module.exports = mongoose.model("User", userModel);

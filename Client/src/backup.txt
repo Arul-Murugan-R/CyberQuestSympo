@@ -20,3 +20,35 @@ Login Page
     // )
 
 ////////////////////////////////
+
+
+legacy api 
+
+		const url = import.meta.env.VITE_RAPID_API_URL;
+		const options = {
+			method: "POST",
+			headers: {
+				"content-type": "application/x-www-form-urlencoded",
+				"X-RapidAPI-Key": import.meta.env.VITE_RAPID_API_KEY,
+				"X-RapidAPI-Host": import.meta.env.VITE_RAPID_API_HOST,
+			},
+			body: new URLSearchParams({
+				LanguageChoice: compilerId || "5",
+				Program: actualCode,
+				Input:
+					sampleInput.length > 0 ? sampleInput : question.sampleInput,
+			}),
+		};
+
+		try {
+		const response = await fetch(url, options);
+			const result = await response.json();
+			if (result.Errors) {
+				throw result.Errors;
+			}
+			setCompiledCode(result.Result);
+			setLoader(false);
+		} catch (error) {
+			setLoader(false);
+			setCompileError(error);
+		}
