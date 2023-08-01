@@ -2,11 +2,12 @@ const ProgramModel = require("../Models/Program");
 
 module.exports.save = async (req, res, next) => {
 	try {
-		const { userId, content, questionNo ,language } = req.body;
+		const { userId, content, questionNo ,language,compilerId } = req.body;
 		const savedContent = await ProgramModel.findOne({ userId, questionNo });
 		if (savedContent) {
 			savedContent.content = content;
 			savedContent.language = language
+			savedContent.compilerId = compilerId
 			await savedContent.save();
 			return res.status(201).json({
 				message: "Saved",
@@ -17,14 +18,16 @@ module.exports.save = async (req, res, next) => {
 				content,
 				userId,
 				questionNo,
-				language
+				language,
+				compilerId
 			});
 			await newcontent.save();
 			return res.status(200).json({
 				message: "Saved",
 				code: newcontent.content,
 				questionNo: newcontent.questionNo,
-				language:newcontent.language
+				language:newcontent.language,
+				compilerId:newcontent.compilerId
 			});
 		}
 	} catch (e) {

@@ -15,6 +15,9 @@ const Program = new Schema({
 	},
 	language:{
 		type:String,
+	},
+	compilerId:{
+		type:String,
 	}
 });
 

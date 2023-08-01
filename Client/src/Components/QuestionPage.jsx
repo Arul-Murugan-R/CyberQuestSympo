@@ -38,27 +38,28 @@ export default function QuestionPage() {
 			// console.log(result.content);
 		 convert = JSON.parse(result.content)
 		 let language = result.language
-		 const filteredCodeId = languageOptions.find(
-			(lang) => lang.value == language
-		).compiler;
+		 let filteredCodeId = result.compilerId
 		 return {convert,language,filteredCodeId}
 		}else{
 			return {convert:"",language:"javascript",filteredCodeId:"17"}
 		}
 
 	}
-	
-	const [actualCode, setActualCode] = useState(loadCode().convert);
-	const [language, setLanguage] = useState(loadCode().language);
-	const [compilerId, setCompilerId] = useState(loadCode().filteredCodeId);
+	const {convert,language:languageInitial,filteredCodeId} = loadCode()
+	const [actualCode, setActualCode] = useState(convert);
+	const [language, setLanguage] = useState(languageInitial);
+	const [compilerId, setCompilerId] = useState(filteredCodeId);
 	useEffect(() => {
 		if (!isLoggedin) {
 			return navigate("/login");
 		}
-		setActualCode(loadCode().convert)
-		setLanguage(loadCode().language)
-		setCompilerId(loadCode().filteredCodeId)
 	}, [isLoggedin, programs]);
+	useEffect(()=>{
+		const {convert,language,filteredCodeId} = loadCode()
+		setActualCode(convert)
+		setLanguage(language)
+		setCompilerId(filteredCodeId)
+	},[programs])
 
 	const [compiledCode, setCompiledCode] = useState("");
 	const [loader, setLoader] = useState(false);
@@ -89,12 +90,17 @@ export default function QuestionPage() {
 				userId,
 				questionNo,
 				content: JSON.stringify(value),
-				language
+				language,
+				compilerId
 			}
 		);
 			if(result.status == 201){
 				console.log(result.data.program)
 			dispatch(programAction.updateProgram(result.data.program))
+			dispatch(snackActions.open({
+				content:'Code Saved Successfully!',
+				type:'success'
+			}))
 		}
 	}
 
@@ -121,7 +127,7 @@ export default function QuestionPage() {
 				"X-RapidAPI-Host": import.meta.env.VITE_RAPID_API_HOST,
 			},
 			body: new URLSearchParams({
-				LanguageChoice: compilerId + "" || "5",
+				LanguageChoice: compilerId || "5",
 				Program:
 					actualCode || 'print("Hello World!, on python language")',
 				Input:sampleInput.split(',')
@@ -237,74 +243,36 @@ export default function QuestionPage() {
 
 const sampleTempleForQuestion = (
 	<div style={{ padding: 30 }}>
-		Snow Howler is the librarian at the central library of the city of
-		HuskyLand. He must handle requests which come in the following forms:
-		<br />
-		1 x y : Insert a book with pages at the end of the shelf.
-		<br />
-		2 x y : Print the number of pages in the book on the shelf.
-		<br />
-		3 x : Print the number of books on the shelf.
-		<br />
-		Snow Howler has got an assistant, Oshie, provided by the Department of
-		Education. Although inexperienced, Oshie can handle all of the queries
-		of types 2 and 3.
-		<br />
-		Help Snow Howler deal with all the queries of type 1.
-		<br />
-		Oshie has used two arrays:
-		<br />
-		<div style={{ background: "#343434", padding: 10 }}>
+		Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+		 Cumque, nemo quidem libero repellendus accusamus soluta? 
+		 Maiores delectus natus perferendis neque? Temporibus nesciunt odio molestiae dicta
+		  dolorem debitis dolore. Sed, iure.
+		<div style={{ background: "#343434", padding: 15 ,margin:'20px 0px' }}>
+			Example :<br/>
 			<pre style={{ color: "#ccc" }}>
-				int* total_number_of_books;
-				<br />
-				/*
-				<br />
-				* This stores the total number of books on each shelf.
-				<br />
-				*/
-				<br />
-				<br />
-				int** total_number_of_pages;
-				<br />
-				/*
-				<br />
-				* This stores the total number of pages in each book of each
-				shelf.
-				<br />
-				* The rows represent the shelves and the columns represent the
-				books.
-				<br />
-				*/
-				<br />
+				Sample Input : CARROT<br/>
+				Sample Output : CAR<br/><br/>
+				Explaination  :<br/> Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+				<br/>Veniam aspernatur unde nisi quos, nulla odio quod in cum magni velit 
+				<br/>quae deleniti eum consectetur quo debitis! Voluptatum reprehenderit accusantium aut!<br/>
+				Quis ratione qui iste explicabo eveniet quisquam voluptatem rem sint quas velit unde necessitatibus id,
+				<br/> minus est quia delectus vero quam voluptate distinctio repellat ut deserunt corrupti! Unde, eligendi doloribus.
+
 			</pre>
 		</div>
 		Input Format
 		<br />
 		<br />
-		The first line contains an integer , the number of shelves in the
-		library.
-		<br />
-		The second line contains an integer , the number of requests.
-		<br />
-		Each of the following lines contains a request in one of the three
-		specified formats.
+		A string as a input 
 		<br />
 		<br />
 		Constraints
 		<br />
 		<br />
-		For each query of the second type, it is guaranteed that a book is
-		present on the shelf at index.
-		<br />
-		Both the shelves and the books are numbered starting from 0.
-		<br />
-		Maximum number of books per shelf .<br />
-		Output Format
-		<br />
-		<br />
-		Write the logic for the requests of type 1. The logic for requests of
-		types 2 and 3 are provided.
+		{`1 <= s.length <= 104`}<br/>
+		{`1 <= words.length <= 5000`}<br/>
+		{`1 <= words[i].length <= 30`}<br/>
+		{`s and words[i] consist of lowercase English letters.`}
 		<br />
 		<br />
 		Sample Input 0<br />
