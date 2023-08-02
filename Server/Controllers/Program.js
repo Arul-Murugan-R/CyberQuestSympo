@@ -98,8 +98,10 @@ module.exports.submitProgram = async (req, res, next) => {
 				options.data.input = item.input;
 
 				const response = await axios.request(options);
-				if (response.data.output !== item.output) {
+				if (response.data.output.replace("\n", "") !== item.output) {
+					console.log(response.data.output.replace("\n", ""));
 					pass = false;
+					break;
 				}
 			}
 			if (pass) {
@@ -108,7 +110,7 @@ module.exports.submitProgram = async (req, res, next) => {
 					questionNo,
 				});
 				await user.save();
-				return res.status(201).json({
+				return res.status(200).json({
 					message: "All test cases passed!",
 					hint: questionsData[questionNo - 1].finalOutput,
 					questionNo,

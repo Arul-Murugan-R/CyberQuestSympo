@@ -5,6 +5,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 import { useSelector } from "react-redux";
 
 export default function ViewHints() {
@@ -26,17 +33,64 @@ export default function ViewHints() {
 				Hints found
 			</Button>
 			<Dialog open={open} onClose={handleClose}>
-				<DialogTitle>Hints Found</DialogTitle>
+				<DialogTitle textAlign={"center"}>Hints Found</DialogTitle>
 				<DialogContent>
-					<DialogContentText>
-						{hints.length > 0
-							? hints.map((item, index) => (
-									<span key={`hint-${index}`}>
-										{" "}
-										{item.questionNo} - {`"${item.hint}"`}{" "}
-									</span>
-							  ))
-							: "No hints found"}
+					<DialogContentText component={"div"}>
+						{hints.length > 0 ? (
+							<TableContainer component={Paper}>
+								<Table
+									sx={{
+										backgroundColor: "#272829",
+										color: "white",
+									}}
+								>
+									<TableHead>
+										<TableRow>
+											<TableCell
+												sx={{
+													color: "white",
+													borderRight:
+														"1px solid white",
+												}}
+											>
+												Question No
+											</TableCell>
+											<TableCell
+												sx={{ color: "white", px: 5 }}
+											>
+												Hint
+											</TableCell>
+										</TableRow>
+									</TableHead>
+									<TableBody>
+										{hints.map((row) => (
+											<TableRow key={row.hint}>
+												<TableCell
+													sx={{
+														color: "white",
+														borderRight:
+															"1px solid white",
+														textAlign: "center",
+													}}
+												>
+													{row.questionNo}
+												</TableCell>
+												<TableCell
+													sx={{
+														color: "white",
+														textAlign: "center",
+													}}
+												>
+													{row.hint}
+												</TableCell>
+											</TableRow>
+										))}
+									</TableBody>
+								</Table>
+							</TableContainer>
+						) : (
+							"No hints found"
+						)}
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>

@@ -1,7 +1,7 @@
 const QuestionTemplate = ({ question }) => {
 	return (
 		<div style={{ padding: 30 }}>
-			<h3>{question.title}</h3>
+			<h2>{question.title}</h2>
 			<p>
 				Description: <br />
 				{question.description.split(".").map((text, index) => {
@@ -21,12 +21,12 @@ const QuestionTemplate = ({ question }) => {
 			>
 				Example :<br />
 				<pre style={{ color: "#ccc" }}>
-					Sample Input : {question.sampleInput}
+					Input : {question.sampleInput}
 					<br />
-					Sample Output : {question.sampleOutput}
+					Output : {question.sampleOutput}
 					<br />
 					<br />
-					Explaination :<br />
+					<div style={{ color: "#fff" }}>Explaination :</div>
 					<ul style={{ marginLeft: "1rem" }}>
 						{question.explanation.split(".").map((text, index) => {
 							return (
@@ -41,34 +41,55 @@ const QuestionTemplate = ({ question }) => {
 			Input Format
 			<br />
 			<br />
-			A string as a input
+			{question.inputFormat}
 			<br />
 			<br />
 			Constraints
 			<br />
 			<br />
-			{`1 <= s.length <= 104`}
+			{question.constrains.split(".").map((text, index) => {
+				return (
+					<span key={`text1${index}`}>
+						• {text.trim()}. <br />
+					</span>
+				);
+			})}
+			{/* {`1 <= s.length <= 104`}
 			<br />
 			{`1 <= words.length <= 5000`}
 			<br />
 			{`1 <= words[i].length <= 30`}
 			<br />
-			{`s and words[i] consist of lowercase English letters.`}
+			{`s and words[i] consist of lowercase English letters.`} */}
 			<br />
 			<br />
-			Sample Input 0<br />
+			Sample Input 1<br />
 			<div style={{ background: "#343434", padding: 10 }}>
 				<pre style={{ color: "#ccc" }} key="#4">
-					5<br />
-					5<br />
-					1 0 1<br />
-					1 0 2<br />
-					1 2 7<br />
-					2 2 0<br />
-					3 0<br />
+					{question.sampleInput.split(".").map((text, index) => {
+						return (
+							<span key={`text1${index}`}>
+								{text.trim()} <br />
+							</span>
+						);
+					})}
 				</pre>
 			</div>
-			Explanation 0<br />
+			<br />
+			Sample Output 1<br />
+			<div style={{ background: "#343434", padding: 10 }}>
+				<pre style={{ color: "#ccc" }} key="#4">
+					{question.sampleOutput.split(".").map((text, index) => {
+						return (
+							<span key={`text1${index}`}>
+								{text.trim()} <br />
+							</span>
+						);
+					})}
+				</pre>
+			</div>
+			<br />
+			{/* Explanation 0<br />
 			<br />
 			There are shelves and requests, or queries.
 			<br />
@@ -78,7 +99,7 @@ const QuestionTemplate = ({ question }) => {
 			- 4 The number of pages in the book on the shelf is 78.
 			<br />
 			- 5 The number of books on the shelf is 2.
-			<br />
+			<br /> */}
 		</div>
 	);
 };

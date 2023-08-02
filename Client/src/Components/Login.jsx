@@ -17,6 +17,7 @@ import { useNavigate } from "react-router";
 import { programAction } from "../store/ProgramStore";
 import CustomSnackbar from "./UI/CustomSnackBar";
 import { snackActions } from "../store/SnackStore";
+import { hintActions } from "../store/HintStore";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function Login() {
@@ -55,6 +56,16 @@ export default function Login() {
 			if (result.status === 200)
 				dispatch(
 					programAction.saveAll({ allPrograms: result.data.programs })
+				);
+			const hintsResult = await axios.post(
+				backendUrl + "/user/gethints",
+				{
+					userId: user._id,
+				}
+			);
+			if (hintsResult.status === 200)
+				dispatch(
+					hintActions.setHints({ hints: hintsResult.data.hints })
 				);
 			dispatch(authActions.loginHandler({ user: user }));
 			dispatch(

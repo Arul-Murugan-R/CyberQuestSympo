@@ -113,6 +113,7 @@ function DrawerAppBar(props) {
 								}}
 								onClick={() => {
 									dispatch(authActions.logoutHandler());
+									dispatch(hintActions.reset());
 									dispatch(
 										snackActions.open({
 											content: "Logout Success",
