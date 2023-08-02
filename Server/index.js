@@ -1,12 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require('body-parser')
 require("dotenv").config();
 
 const UserRoutes = require("./Routes/User");
 const ProgramRoutes = require("./Routes/Program");
 
 const app = express();
-app.use(express.json());
+app.use(bodyParser.json());
 
 app.use((req, res, next) => {
 	res.setHeader("Access-Control-Allow-Origin", "*");
@@ -21,9 +22,6 @@ mongoose
 	.connect(url)
 	.then(() => {
 		console.log("MONGO CONNECTION OPEN!!!");
-		app.listen(process.env.PORT || 8080, () => {
-			console.log("Listening to http://localhost:8080");
-		});
 	})
 	.catch((err) => {
 		console.log("OH NO MONGO ERROR!!!!");
@@ -37,4 +35,10 @@ app.use("/", (req, res) => {
 	res.status(200).json({
 		message: "Things are working fine",
 	});
+});
+app.all("*", (req, res, next) => {
+	next(new ExpressError("Page not found", 404));
+});
+app.listen(process.env.PORT || 8080, () => {
+	console.log("Listening to http://localhost:8080");
 });
