@@ -11,6 +11,8 @@ import CustomSnackbar from "./Components/UI/CustomSnackBar";
 import axios from "axios";
 import { programAction } from "./store/ProgramStore";
 import { hintActions } from "./store/HintStore";
+import { useEffect } from "react";
+import { snackActions } from "./store/SnackStore";
 
 const router = createBrowserRouter([
 	{
@@ -54,6 +56,23 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function App() {
 	const dispatch = useDispatch();
+	const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+	useEffect(() => {
+		window.addEventListener("blur", () => {
+			if (isLoggedIn) {
+				dispatch(authActions.logoutHandler());
+				dispatch(programAction.reset());
+				dispatch(hintActions.reset());
+				dispatch(
+					snackActions.open({
+						content: "Logged out due to switching windows!",
+						type: "error",
+					})
+				);
+			}
+		});
+	}, []);
 
 	const getprogs = async (userId) => {
 		const result = await axios.post(backendUrl + "/program/getall", {

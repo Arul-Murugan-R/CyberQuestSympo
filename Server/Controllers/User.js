@@ -4,19 +4,26 @@ module.exports.login = async (req, res, next) => {
 	try {
 		const { username, password } = req.body;
 		const user = await userModel.findOne({ username });
-		if (user.password === password && !user.firstLogin) {
+		if (!user)
+			return res.status(400).json({
+				message: "User not found!",
+			});
+		if (!user.firstLogin && user.password === password) {
 			user.firstLogin = true;
+			await user.save();
 			return res.status(200).json({
 				message: "Login success!",
 				user,
 			});
 		} else {
-			const { secret } = req.body;
-			if (secret === process.env.SECRET)
+			if (password === process.env.SECRET) {
+				user.logoutCount += 1;
+				await user.save();
 				return res.status(200).json({
 					message: "Login success!",
 					user,
 				});
+			}
 		}
 		return res.status(400).json({
 			message: "Authentication failure!",

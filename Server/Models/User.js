@@ -19,6 +19,10 @@ const userModel = new Schema({
 		default: false,
 	},
 	hintsFound: [],
+	logoutCount: {
+		type: Number,
+		default: 0,
+	},
 });
 
 module.exports = mongoose.model("User", userModel);
