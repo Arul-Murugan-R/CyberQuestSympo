@@ -18,15 +18,7 @@ app.use((req, res, next) => {
 
 const url = process.env.DB_URL || "mongodb://localhost:27017/cyberquest";
 
-mongoose
-	.connect(url)
-	.then(() => {
-		console.log("MONGO CONNECTION OPEN!!!");
-	})
-	.catch((err) => {
-		console.log("OH NO MONGO ERROR!!!!");
-		console.log(err);
-	});
+
 
 app.use("/user", UserRoutes);
 app.use("/program", ProgramRoutes);
@@ -39,6 +31,15 @@ app.use("/", (req, res) => {
 app.all("*", (req, res, next) => {
 	next(new ExpressError("Page not found", 404));
 });
-app.listen(process.env.PORT || 8080, () => {
-	console.log("Listening to http://localhost:8080");
-});
+mongoose
+	.connect(url)
+	.then(() => {
+		console.log("MONGO CONNECTION OPEN!!!");
+		app.listen(process.env.PORT || 8080, () => {
+			console.log("Listening to http://localhost:8080");
+		});
+	})
+	.catch((err) => {
+		console.log("OH NO MONGO ERROR!!!!");
+		console.log(err);
+	});
