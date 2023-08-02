@@ -58,21 +58,6 @@ function App() {
 	const dispatch = useDispatch();
 	const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
-	useEffect(() => {
-		window.addEventListener("blur", () => {
-			if (isLoggedIn) {
-				dispatch(authActions.logoutHandler());
-				dispatch(programAction.reset());
-				dispatch(hintActions.reset());
-				dispatch(
-					snackActions.open({
-						content: "Logged out due to switching windows!",
-						type: "error",
-					})
-				);
-			}
-		});
-	}, []);
 
 	const getprogs = async (userId) => {
 		const result = await axios.post(backendUrl + "/program/getall", {

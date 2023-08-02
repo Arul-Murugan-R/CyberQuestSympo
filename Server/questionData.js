@@ -1,43 +1,43 @@
 module.exports.questionsData = [
 	{
 		no: 1,
-		title: "Oddity of Symmetrical String",
+		title: "Alphabet Extraction Program",
 		difficultyLevel: "Easy",
 		description:
-			"You will be provided with a string S as an input. Process the string and return the middle character if the string is an odd palindrome. Else return -1",
-		sampleInput: "MALAYALAM",
-		sampleOutput: "Y",
+			"Given a string S that contains alphabets that are uppercase, lowercase, numbers, special characters, and symbols, write a program to extract only the alphabets and display it ",
+		sampleInput:
+			"Hello! This is a 1234 long string with special characters *&^%$#@!",
+		sampleOutput: "HelloThisisalongstringwithspecialcharacters",
 		explanation:
-			"The length of the input string is 9. Malayalam is a palindrome string. Hence, the program returns the middle character ‘Y’",
-		constrains: `1 <= S[length] <= 20
-Length of S of can be even or odd.
-S contains only both uppercase and lowercase alphabets
+			"The given string has spaces, numbers, and special characters. On removing the unwanted characters, we get the final output as ‘HelloThisisalongstringwithspecialcharacters’",
+		constrains: `S[length]<=100.
+S contains space, uppercase, lowercase, numbers, symbols, and special characters
 `,
 		inputFormat: "String",
-		outputFormat: "Character or -1",
+		outputFormat: "String",
 		hiddenTestCase: [
 			{
-				input: "MALAVALAM",
-				output: "V",
+				input: "$%8 *#R0_0* !^-^! [%A7] &&B$$",
+				output: "RAB",
 			},
 			{
-				input: "ABBA",
-				output: "-1",
+				input: "H23E** L%%L#@_O",
+				output: "HELLO",
 			},
 			{
-				input: "level",
-				output: "v",
+				input: "**@a$^@(*nb(()&32hjsd*(239{“(*#@",
+				output: "anbhjsd",
 			},
 			{
-				input: "something",
-				output: "-1",
+				input: "B &*21)&)&u &*$(*v(&*$# a*@$ n{{{$",
+				output: "Buvan",
 			},
 			{
-				input: "racecar",
-				output: "e",
+				input: "#()!$(%b$)#79{“}a*&$307t9992{{@75",
+				output: "bat",
 			},
 		],
-		finalOutput: "V",
+		finalOutput: "RAB",
 	},
 	{
 		no: 2,
@@ -81,46 +81,123 @@ binaryInput2[length]==8
 	},
 	{
 		no: 3,
-		title: "Alphabet Extraction Program",
+		title: "Oddity of Symmetrical String",
 		difficultyLevel: "Easy",
 		description:
-			"Given a string S that contains alphabets that are uppercase, lowercase, numbers, special characters, and symbols, write a program to extract only the alphabets and display it ",
-		sampleInput:
-			"Hello! This is a 1234 long string with special characters *&^%$#@!",
-		sampleOutput: "HelloThisisalongstringwithspecialcharacters",
+			"You will be provided with a string S as an input. Process the string and return the middle character if the string is an odd palindrome. Else return -1",
+		sampleInput: "MALAYALAM",
+		sampleOutput: "Y",
 		explanation:
-			"The given string has spaces, numbers, and special characters. On removing the unwanted characters, we get the final output as ‘HelloThisisalongstringwithspecialcharacters’",
-		constrains: `S[length]<=100.
-S contains space, uppercase, lowercase, numbers, symbols, and special characters
+			"The length of the input string is 9. Malayalam is a palindrome string. Hence, the program returns the middle character ‘Y’",
+		constrains: `1 <= S[length] <= 20
+Length of S of can be even or odd.
+S contains only both uppercase and lowercase alphabets
+`,
+		inputFormat: "String",
+		outputFormat: "Character or -1",
+		hiddenTestCase: [
+			{
+				input: "MALAVALAM",
+				output: "V",
+			},
+			{
+				input: "ABBA",
+				output: "-1",
+			},
+			{
+				input: "level",
+				output: "v",
+			},
+			{
+				input: "something",
+				output: "-1",
+			},
+			{
+				input: "racecar",
+				output: "e",
+			},
+		],
+		finalOutput: "V",
+	},
+	{
+		no: 4,
+		title: "Letter Vanisher",
+		difficultyLevel: "Hard",
+		description: `You are given a word W and a positive integer value R. You need to perform a "remove" operation on word W as follows: Find a subset M of length R within word W. The subset M must consist of the same letter repeated R times. Remove this subset M from the word W.
+    After removing subset M, concatenate the remaining portions of the word W on its left side and right side.
+    
+    Repeat the "remove" operation until there are no more subsets M of length R that satisfy the conditions.
+    
+    Return the final string after all the blasting operations have been done
+    `,
+		sampleInput: "ababbaaab 3",
+		sampleOutput: "aba",
+		explanation:
+			"Given, the string 'ababbaaab' and an integer 3, we have removed a subset of length 3 consisting of the same letters, so we remove ‘aaa’ from the string and it becomes 'ababbb' then again we perform the remove operation removing 'bbb' as it satisfies condition then string becomes 'aba'.As we cannot find any string consisting of the same letters of length R we return 'aba'",
+		constrains: `5<=W[length]<=20.
+    1<=R<=5`,
+		inputFormat: " A String and an Integer are space separated.",
+		outputFormat: "String",
+		hiddenTestCase: [
+			{
+				input: "IIBBICCCCTTTBBY 2",
+				output: "ITY",
+			},
+			{
+				input: " CAAABBBAACDDDD 2",
+				output: "CABC",
+			},
+			{
+				input: "ANNAPALLIKOOKIM 2",
+				output: "PAM",
+			},
+			{
+				input: "BBBACDDDCCEFFEEEF 3",
+				output: "AE",
+			},
+		],
+		finalOutput: "ITY",
+	},
+	{
+		no: 5,
+		title: "Frequently occurring substring",
+		difficultyLevel: "Medium",
+		description:
+			"Given an input string S. Generate all possible substrings of length 2 from the input string S. A substring is a contiguous sequence of characters within the original string. Find and return the frequently occurring substring ",
+		sampleInput: "abkduvabpuvjkmuv",
+		sampleOutput: "uv",
+		explanation:
+			"In the given string S the substring ‘uv’ of length 2 occurs 3 times and the substring ‘ab’ of length 2 occurs 2 times. Hence we return the sub-string with maximum frequency. In this case ‘uv’ is displayed",
+		constrains: `10<=S[length]<=50
 `,
 		inputFormat: "String",
 		outputFormat: "String",
 		hiddenTestCase: [
 			{
-				input: "$%8 *#R0_0* !^-^! [%A7] &&B$$",
-				output: "RAB",
+				input: "abcdulfghuljkmul",
+				output: "ul",
 			},
 			{
-				input: "H23E** L%%L#@_O",
-				output: "HELLO",
+				input: "heabchexyzhehe",
+				output: "he",
 			},
 			{
-				input: "**@a$^@(*nb(()&32hjsd*(239{“(*#@",
-				output: "anbhjsd",
+				input: "onafteranyesterday",
+				output: "ter",
 			},
 			{
-				input: "B &*21)&)&u &*$(*v(&*$# a*@$ n{{{$",
-				output: "Buvan",
+				input: "mynamemyfriendmybook",
+				output: "my",
 			},
 			{
-				input: "#()!$(%b$)#79{“}a*&$307t9992{{@75",
-				output: "bat",
+				input: "OKabcOKhelloxyz",
+				output: "OK",
 			},
 		],
-		finalOutput: "RAB",
+		finalOutput: "UL",
 	},
 	{
-		no: 4,
+		no: 6,
 		title: "Longest Common Substring Finder",
 		difficultyLevel: "Medium",
 		description:
@@ -159,81 +236,5 @@ Array - contains N strings separated by space.
 		],
 		finalOutput: "IL",
 	},
-	{
-		no: 5,
-		title: "Frequently occurring substring",
-		difficultyLevel: "Medium",
-		description:
-			"Given an input string S. Generate all possible substrings of length 2 from the input string S. A substring is a contiguous sequence of characters within the original string. Find and return the frequently occurring substring ",
-		sampleInput: "abkduvabpuvjkmuv",
-		sampleOutput: "uv",
-		explanation:
-			"In the given string S the substring ‘uv’ of length 2 occurs 3 times and the substring ‘ab’ of length 2 occurs 2 times. Hence we return the sub-string with maximum frequency. In this case ‘uv’ is displayed",
-		constrains: `10<=S[length]<=50
-`,
-		inputFormat: "String",
-		outputFormat: "String",
-		hiddenTestCase: [
-			{
-				input: "abcdulfghuljkmul",
-				output: "ul",
-			},
-			{
-				input: "heabchexyzhehe",
-				output: "he",
-			},
-			{
-				input: "OKabcOKhelloxyz",
-				output: "ter",
-			},
-			{
-				input: "mynamemyfriendmybook",
-				output: "my",
-			},
-			{
-				input: "OKabcOKhelloxyz",
-				output: "OK",
-			},
-		],
-		finalOutput: "UL",
-	},
-	{
-		no: 6,
-		title: "Letter Vanisher",
-		difficultyLevel: "Hard",
-		description: `You are given a word W and a positive integer value R. You need to perform a "remove" operation on word W as follows: Find a subset M of length R within word W. The subset M must consist of the same letter repeated R times. Remove this subset M from the word W.
-    After removing subset M, concatenate the remaining portions of the word W on its left side and right side.
-    
-    Repeat the "remove" operation until there are no more subsets M of length R that satisfy the conditions.
-    
-    Return the final string after all the blasting operations have been done
-    `,
-		sampleInput: "ababbaaab 3",
-		sampleOutput: "aba",
-		explanation:
-			"Given, the string 'ababbaaab' and an integer 3, we have removed a subset of length 3 consisting of the same letters, so we remove ‘aaa’ from the string and it becomes 'ababbb' then again we perform the remove operation removing 'bbb' as it satisfies condition then string becomes 'aba'.As we cannot find any string consisting of the same letters of length R we return 'aba'",
-		constrains: `5<=W[length]<=20.
-    1<=R<=5`,
-		inputFormat: " A String and an Integer are space separated.",
-		outputFormat: "String",
-		hiddenTestCase: [
-			{
-				input: "IIBBICCCCTTTBBY 2",
-				output: "ITY",
-			},
-			{
-				input: " CAAABBBAACDDDD 2",
-				output: "CABC",
-			},
-			{
-				input: "ANNAPALLIKOOKIM 2",
-				output: "PAM",
-			},
-			{
-				input: "BBBACDDDCCEFFEEEF 3",
-				output: "AE",
-			},
-		],
-		finalOutput: "V",
-	},
+	
 ];

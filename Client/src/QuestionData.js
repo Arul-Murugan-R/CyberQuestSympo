@@ -22,20 +22,20 @@ s and words[i] consist of lowercase English letters`,
 export const questionsData = [
 	{
 		no: 1,
-		title: "Oddity of Symmetrical String",
+		title: "Alphabet Extraction Program",
 		difficultyLevel: "Easy",
 		description:
-			"You will be provided with a string S as an input. Process the string and return the middle character if the string is an odd palindrome. Else return -1",
-		sampleInput: "MALAYALAM",
-		sampleOutput: "Y",
+			"Given a string S that contains alphabets that are uppercase, lowercase, numbers, special characters, and symbols, write a program to extract only the alphabets and display it ",
+		sampleInput:
+			"Hello! This is a 1234 long string with special characters *&^%$#@!",
+		sampleOutput: "HelloThisisalongstringwithspecialcharacters",
 		explanation:
-			"The length of the input string is 9. Malayalam is a palindrome string. Hence, the program returns the middle character ‘Y’",
-		constrains: `1 <= S[length] <= 20
-Length of S of can be even or odd.
-S contains only both uppercase and lowercase alphabets
+			"The given string has spaces, numbers, and special characters. On removing the unwanted characters, we get the final output as ‘HelloThisisalongstringwithspecialcharacters’",
+		constrains: `S[length]<=100.
+S contains space, uppercase, lowercase, numbers, symbols, and special characters
 `,
 		inputFormat: "String",
-		outputFormat: "Character or -1",
+		outputFormat: "String",
 	},
 	{
 		no: 2,
@@ -56,36 +56,39 @@ binaryInput2[length]==8
 	},
 	{
 		no: 3,
-		title: "Alphabet Extraction Program",
+		title: "Oddity of Symmetrical String",
 		difficultyLevel: "Easy",
 		description:
-			"Given a string S that contains alphabets that are uppercase, lowercase, numbers, special characters, and symbols, write a program to extract only the alphabets and display it ",
-		sampleInput:
-			"Hello! This is a 1234 long string with special characters *&^%$#@!",
-		sampleOutput: "HelloThisisalongstringwithspecialcharacters",
+			"You will be provided with a string S as an input. Process the string and return the middle character if the string is an odd palindrome. Else return -1",
+		sampleInput: "MALAYALAM",
+		sampleOutput: "Y",
 		explanation:
-			"The given string has spaces, numbers, and special characters. On removing the unwanted characters, we get the final output as ‘HelloThisisalongstringwithspecialcharacters’",
-		constrains: `S[length]<=100.
-S contains space, uppercase, lowercase, numbers, symbols, and special characters
+			"The length of the input string is 9. Malayalam is a palindrome string. Hence, the program returns the middle character ‘Y’",
+		constrains: `1 <= S[length] <= 20
+Length of S of can be even or odd.
+S contains only both uppercase and lowercase alphabets
 `,
 		inputFormat: "String",
-		outputFormat: "String",
+		outputFormat: "Character or -1",
 	},
 	{
 		no: 4,
-		title: "Longest Common Substring Finder",
-		difficultyLevel: "Medium",
-		description:
-			"Given an integer N, get an input array that contains N strings separated by space. Write a program to find and return the longest common sub-string. Assuming that the set of strings has at least one character in common",
-		sampleInput: "3\napple ape april",
-		sampleOutput: "ap",
+		title: "Letter Vanisher",
+		difficultyLevel: "Hard",
+		description: `You are given a word W and a positive integer value R. You need to perform a "remove" operation on word W as follows: Find a subset M of length R within word W. The subset M must consist of the same letter repeated R times. Remove this subset M from the word W.
+    After removing subset M, concatenate the remaining portions of the word W on its left side and right side.
+    
+    Repeat the "remove" operation until there are no more subsets M of length R that satisfy the conditions.
+    
+    Return the final string after all the blasting operations have been done
+    `,
+		sampleInput: "ababbaaab 3",
+		sampleOutput: "aba",
 		explanation:
-			"The given string has spaces, numbers, and special characters. On removing the unwanted characters, we get the final output as ‘HelloThisisalongstringwithspecialcharacters’",
-		constrains: `2<=N<=10.
-3<=String[length]<=10`,
-		inputFormat: `Integer N.
-Array - contains N strings separated by space.
-`,
+			"Given, the string 'ababbaaab' and integer 3, we remove all subsets of length 3 with the same letters. We remove ‘aaa’ from the string and it becomes 'ababbb'. Again we remove 'bbb' and the string becomes 'aba'. Now we do not have string consisting of the same letters of length 3 we return 'aba'",
+		constrains: `5<=W[length]<=20.
+    1<=R<=5`,
+		inputFormat: " A String and an Integer are space separated.",
 		outputFormat: "String",
 	},
 	{
@@ -105,22 +108,19 @@ Array - contains N strings separated by space.
 	},
 	{
 		no: 6,
-		title: "Letter Vanisher",
-		difficultyLevel: "Hard",
-		description: `You are given a word W and a positive integer value R. You need to perform a "remove" operation on word W as follows: Find a subset M of length R within word W. The subset M must consist of the same letter repeated R times. Remove this subset M from the word W.
-    After removing subset M, concatenate the remaining portions of the word W on its left side and right side.
-    
-    Repeat the "remove" operation until there are no more subsets M of length R that satisfy the conditions.
-    
-    Return the final string after all the blasting operations have been done
-    `,
-		sampleInput: "ababbaaab 3",
-		sampleOutput: "aba",
+		title: "Longest Common Substring Finder",
+		difficultyLevel: "Medium",
+		description:
+			"Given an integer N, get an input array that contains N strings separated by space. Write a program to find and return the longest common sub-string. Assuming that the set of strings has at least one character in common",
+		sampleInput: "3\napple ape april",
+		sampleOutput: "ap",
 		explanation:
-			"Given, the string 'ababbaaab' and integer 3, we remove all subsets of length 3 with the same letters. We remove ‘aaa’ from the string and it becomes 'ababbb'. Again we remove 'bbb' and the string becomes 'aba'. Now we do not have string consisting of the same letters of length 3 we return 'aba'",
-		constrains: `5<=W[length]<=20.
-    1<=R<=5`,
-		inputFormat: " A String and an Integer are space separated.",
+			"The given string has spaces, numbers, and special characters. On removing the unwanted characters, we get the final output as ‘HelloThisisalongstringwithspecialcharacters’",
+		constrains: `2<=N<=10.
+3<=String[length]<=10`,
+		inputFormat: `Integer N.
+Array - contains N strings separated by space.
+`,
 		outputFormat: "String",
 	},
 ];

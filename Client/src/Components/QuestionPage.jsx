@@ -154,6 +154,7 @@ export default function QuestionPage() {
 
 		try {
 			const response = await axios.request(options);
+			console.log(response)
 			setCompiledCode(response.data.output);
 			setLoader(false);
 		} catch (error) {

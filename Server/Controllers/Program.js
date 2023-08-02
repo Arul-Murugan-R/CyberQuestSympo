@@ -98,8 +98,9 @@ module.exports.submitProgram = async (req, res, next) => {
 				options.data.input = item.input;
 
 				const response = await axios.request(options);
-				if (response.data.output.replace("\n", "") !== item.output) {
-					console.log(response.data.output.replace("\n", ""));
+				console.log(response.data)
+				if (response.data.output.replaceAll("\n", "") !== item.output) {
+					console.log(response.data.output,response.data.output.replaceAll("\n", ""));
 					pass = false;
 					break;
 				}

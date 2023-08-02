@@ -25,8 +25,17 @@ export default function ViewHints() {
 		setOpen(false);
 	};
 
-	const hints = useSelector((state) => state.hints);
+	let hints = useSelector((state) => state.hints);
 
+	let tempHint = [...hints]
+	function compQno(a,b){
+		return a.questionNo - b.questionNo
+	}
+	let sortedHints = tempHint.sort(compQno)
+	// console.log(tempHint.sort(compQno))
+	// for(let i=1;i<=5;i++){
+	// 	sortedHint.push(hints.find((h)=>h.questionNo == i))
+	// }
 	return (
 		<div>
 			<Button sx={{ color: "white" }} onClick={handleClickOpen}>
@@ -63,7 +72,7 @@ export default function ViewHints() {
 										</TableRow>
 									</TableHead>
 									<TableBody>
-										{hints.map((row) => (
+										{sortedHints.map((row) => {return row&&(
 											<TableRow key={row.hint}>
 												<TableCell
 													sx={{
@@ -84,7 +93,7 @@ export default function ViewHints() {
 													{row.hint}
 												</TableCell>
 											</TableRow>
-										))}
+										)})}
 									</TableBody>
 								</Table>
 							</TableContainer>

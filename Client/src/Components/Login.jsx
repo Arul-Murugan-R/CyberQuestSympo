@@ -42,17 +42,17 @@ export default function Login() {
 	const loginHandler = async (event) => {
 		try {
 			event.preventDefault();
-			console.log(backendUrl, userState);
+			// console.log(backendUrl, userState);
 			const response = await axios.post(backendUrl + "/user/login", {
 				username: userState.teamName,
 				password: userState.password,
 			});
-			console.log(response.data);
+			// console.log(response,'hello');
 			const user = response.data.user;
 			const result = await axios.post(backendUrl + "/program/getall", {
 				userId: user._id,
 			});
-			console.log(result.data.programs);
+			// console.log(result.data.programs);
 			if (result.status === 200)
 				dispatch(
 					programAction.saveAll({ allPrograms: result.data.programs })
@@ -81,6 +81,18 @@ export default function Login() {
 			return navigate("/");
 		} catch (error) {
 			console.log(error);
+			if( error.response.status == 400){
+				return dispatch(snackActions.open({
+					content:error.response.data.message,
+					type:'error'
+				}))
+			}
+			if(error.response.status == 500 ){
+				return dispatch(snackActions.open({
+					content:error.response.data.message,
+					type:'error'
+				}))
+			}
 		}
 	};
 
