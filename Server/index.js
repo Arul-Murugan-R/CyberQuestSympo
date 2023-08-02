@@ -21,7 +21,7 @@ mongoose
 	.connect(url)
 	.then(() => {
 		console.log("MONGO CONNECTION OPEN!!!");
-		app.listen(8080, () => {
+		app.listen(process.env.PORT || 8080, () => {
 			console.log("Listening to http://localhost:8080");
 		});
 	})
