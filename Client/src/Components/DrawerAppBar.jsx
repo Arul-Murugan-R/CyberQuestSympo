@@ -38,7 +38,7 @@ function DrawerAppBar(props) {
 
 	const drawer = (
 		<Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-			<Typography variant="h6">CyberQuests</Typography>
+			<Typography variant="h6">CyberQuest</Typography>
 			<Divider />
 			<List>
 				{navItems.map((item) => (
@@ -84,8 +84,7 @@ function DrawerAppBar(props) {
 						}}
 					>
 						<Typography variant="h6" component="div">
-							CyberQuest
-						</Typography>
+							CyberQuest						</Typography>
 					</Link>
 					<Box sx={{ mr: 3 }}>
 						<ViewHints />
