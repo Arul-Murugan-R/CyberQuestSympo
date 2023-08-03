@@ -14,18 +14,18 @@ mongoose
 		console.log(err);
 	});
 	
-	app.use((req, res, next) => {
-		res.setHeader("Access-Control-Allow-Origin", process.env.CLIENT_URL);
-		res.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,PATCH,DELETE");
-		res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
-		next();
-	});
 	
 	const UserRoutes = require("./Routes/User");
 	const ProgramRoutes = require("./Routes/Program");
 	
 	const app = express();
 	app.use(bodyParser.json());
+	app.use((req, res, next) => {
+		res.setHeader("Access-Control-Allow-Origin", process.env.CLIENT_URL);
+		res.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,PATCH,DELETE");
+		res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+		next();
+	});
 	
 	app.use("/user", UserRoutes);
 	app.use("/program", ProgramRoutes);
