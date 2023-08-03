@@ -34,6 +34,11 @@ export default function QuestionPage() {
 	const { id: questionNo } = useParams();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const [compiledCode, setCompiledCode] = useState("");
+	const [loader, setLoader] = useState(false);
+	const [sampleInput, setSampleInput] = useState("");
+	const [compileError, setCompileError] = useState();
+	const question = questionsData[questionNo - 1];
 
 	useEffect(() => {
 		if (questionNo < 0 || questionNo > 6) {
@@ -68,16 +73,9 @@ export default function QuestionPage() {
 		}
 	};
 
-	const { convert, language: languageInitial, filteredCodeId } = loadCode();
-
-	const [actualCode, setActualCode] = useState(convert);
-	const [language, setLanguage] = useState(languageInitial);
-	const [compilerId, setCompilerId] = useState(filteredCodeId);
-	const [compiledCode, setCompiledCode] = useState("");
-	const [loader, setLoader] = useState(false);
-	const [sampleInput, setSampleInput] = useState("");
-	const [compileError, setCompileError] = useState();
-	const question = questionsData[questionNo - 1];
+	const [actualCode, setActualCode] = useState(() => loadCode().convert);
+	const [language, setLanguage] = useState(() =>loadCode().language);
+	const [compilerId, setCompilerId] = useState(() => loadCode().filteredCodeId);
 
 	useEffect(() => {
 		if (!isLoggedin) {

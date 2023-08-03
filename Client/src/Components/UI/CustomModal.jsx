@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 
 export default function ViewHints() {
 	const [open, setOpen] = useState(false);
+	const hints = useSelector((state) => state.hints);
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -25,7 +26,6 @@ export default function ViewHints() {
 		setOpen(false);
 	};
 
-	let hints = useSelector((state) => state.hints);
 
 	let tempHint = [...hints]
 	function compQno(a,b){
