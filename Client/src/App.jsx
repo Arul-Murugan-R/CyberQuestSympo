@@ -13,6 +13,7 @@ import { programAction } from "./store/ProgramStore";
 import { hintActions } from "./store/HintStore";
 import { useEffect } from "react";
 import { snackActions } from "./store/SnackStore";
+import store from "./store/redux";
 
 const router = createBrowserRouter([
 	{
@@ -82,7 +83,7 @@ function App() {
 
 	if (initial) {
 		dispatch(authActions.setState());
-		const userId = useSelector((state) => state.auth.teamId);
+		const userId = store.getState().auth.teamId;
 		getprogs(userId);
 		getHintsFound(userId);
 
