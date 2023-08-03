@@ -58,7 +58,6 @@ function App() {
 	const dispatch = useDispatch();
 	const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
-
 	const getprogs = async (userId) => {
 		const result = await axios.post(backendUrl + "/program/getall", {
 			userId,
@@ -70,11 +69,15 @@ function App() {
 	};
 
 	const getHintsFound = async (userId) => {
-		const result = await axios.post(backendUrl + "/user/gethints", {
-			userId,
-		});
-		if (result.status === 200)
-			dispatch(hintActions.setHints({ hints: result.data.hints }));
+		try {
+			const result = await axios.post(backendUrl + "/user/gethints", {
+				userId,
+			});
+			if (result.status === 200)
+				dispatch(hintActions.setHints({ hints: result.data.hints }));
+		} catch (e) {
+			console.log(e);
+		}
 	};
 
 	if (initial) {

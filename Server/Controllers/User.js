@@ -23,10 +23,11 @@ module.exports.login = async (req, res, next) => {
 					message: "Login success!",
 					user,
 				});
-			}else{
+			} else {
 				return res.status(500).json({
-					message:'Your password had been changed. Consult organisers.',
-				})
+					message:
+						"Your password had been changed. Consult organisers.",
+				});
 			}
 		}
 		// return res.status(400).json({
@@ -65,5 +66,10 @@ module.exports.getHints = async (req, res, next) => {
 		return res.status(201).json({
 			message: "No hints found",
 		});
-	} catch (e) {}
+	} catch (e) {
+		return res.status(210).json({
+			message: "Fetch unsuccessfull! Try again",
+			error: e,
+		});
+	}
 };
