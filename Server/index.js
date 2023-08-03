@@ -8,37 +8,35 @@ mongoose
 	.connect(url)
 	.then(() => {
 		console.log("MONGO CONNECTION OPEN!!!");
-		app.listen(process.env.PORT || 8080, () => {
-			console.log("Listening to http://localhost:8080");
-		});
 	})
 	.catch((err) => {
 		console.log("OH NO MONGO ERROR!!!!");
 		console.log(err);
 	});
-
-const UserRoutes = require("./Routes/User");
-const ProgramRoutes = require("./Routes/Program");
-
-const app = express();
-app.use(bodyParser.json());
-
-app.use((req, res, next) => {
-	res.setHeader("Access-Control-Allow-Origin", "*");
-	res.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,PATCH,DELETE");
-	res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
-	next();
-});
-
-
-
-
-app.use("/user", UserRoutes);
-app.use("/program", ProgramRoutes);
-
-app.use("/", (req, res) => {
-	res.status(200).json({
-		message: "Things are working fine",
+	
+	app.use((req, res, next) => {
+		res.setHeader("Access-Control-Allow-Origin", process.env.CLIENT_URL);
+		res.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,PATCH,DELETE");
+		res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+		next();
 	});
 	
-});
+	const UserRoutes = require("./Routes/User");
+	const ProgramRoutes = require("./Routes/Program");
+	
+	const app = express();
+	app.use(bodyParser.json());
+	
+	app.use("/user", UserRoutes);
+	app.use("/program", ProgramRoutes);
+	
+	app.use("/", (req, res) => {
+		res.status(200).json({
+			message: "Things are working fine",
+		});
+		
+	});
+
+	app.listen(process.env.PORT || 8080, () => {
+		console.log("Listening to http://localhost:8080");
+	});
