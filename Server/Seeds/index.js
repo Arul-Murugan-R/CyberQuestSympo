@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const User = require("../Models/User");
 require("dotenv").config();
 
-const url = process.env.DB_URL;
+const url = "";
 
 mongoose
-	.connect(url || "mongodb://localhost:27017/imageApp")
+	.connect(url)
 	.then(() => {
 		console.log("MONGO CONNECTION OPEN!!!");
 	})
@@ -14,21 +14,14 @@ mongoose
 		console.log(err);
 	});
 
-const userData = [
-	{
-		username: "",
-		password: "",
-		secret: "",
-	},
-];
+const userData = [];
 
 const seedDb = async () => {
 	for (const user of userData) {
-		const { username, password, secret } = user;
+		const { username, password } = user;
 		const u = new User({
 			username,
 			password,
-			secret,
 		});
 		await u.save();
 	}
