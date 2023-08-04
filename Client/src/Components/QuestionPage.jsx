@@ -156,7 +156,7 @@ export default function QuestionPage() {
 
 		try {
 			const response = await axios.request(options);
-			setCompiledCode(response.data.output);
+			setCompiledCode(response.data.output || "null");
 			setLoader(false);
 		} catch (error) {
 			setCompileError(error.data.error || "Something went wrong!");

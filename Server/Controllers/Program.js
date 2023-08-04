@@ -95,6 +95,7 @@ module.exports.submitProgram = async (req, res, next) => {
 		) {
 			const item =
 				questionsData[questionNo - 1].hiddenTestCase[limit - 1];
+				console.log(item)
 			options.data.code = code;
 			options.data.input = item.input;
 

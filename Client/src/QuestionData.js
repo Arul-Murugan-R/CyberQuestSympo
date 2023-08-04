@@ -51,7 +51,7 @@ S contains space, uppercase, lowercase, numbers, symbols, and special characters
 binaryInput1[length]==8.
 binaryInput2[length]==8
 `,
-		inputFormat: "Both the binary inputs are separated by a space.",
+		inputFormat: "Both the binary inputs are separated by a space",
 		outputFormat: "String",
 	},
 	{
@@ -88,7 +88,7 @@ S contains only both uppercase and lowercase alphabets
 			"Given, the string 'ababbaaab' and integer 3, we remove all subsets of length 3 with the same letters. We remove ‘aaa’ from the string and it becomes 'ababbb'. Again we remove 'bbb' and the string becomes 'aba'. Now we do not have string consisting of the same letters of length 3 we return 'aba'",
 		constrains: `5<=W[length]<=20.
     1<=R<=5`,
-		inputFormat: " A String and an Integer are space separated.",
+		inputFormat: " A String and an Integer are space separated",
 		outputFormat: "String",
 	},
 	{
@@ -104,7 +104,7 @@ S contains only both uppercase and lowercase alphabets
 		constrains: `10<=S[length]<=50
 `,
 		inputFormat: "String",
-		outputFormat: "String",
+		outputFormat: "String of length 2",
 	},
 	{
 		no: 6,

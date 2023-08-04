@@ -136,7 +136,7 @@ S contains only both uppercase and lowercase alphabets
 			"Given, the string 'ababbaaab' and an integer 3, we have removed a subset of length 3 consisting of the same letters, so we remove ‘aaa’ from the string and it becomes 'ababbb' then again we perform the remove operation removing 'bbb' as it satisfies condition then string becomes 'aba'.As we cannot find any string consisting of the same letters of length R we return 'aba'",
 		constrains: `5<=W[length]<=20.
     1<=R<=5`,
-		inputFormat: " A String and an Integer are space separated.",
+		inputFormat: " A String and an Integer are space separated",
 		outputFormat: "String",
 		hiddenTestCase: [
 			{
@@ -155,6 +155,10 @@ S contains only both uppercase and lowercase alphabets
 				input: "BBBACDDDCCEFFEEEF 3",
 				output: "AE",
 			},
+			{
+				input: "AABBBCCDEF 2",
+				output: "BDEF",
+			},
 		],
 		finalOutput: "ITY",
 	},
@@ -171,7 +175,7 @@ S contains only both uppercase and lowercase alphabets
 		constrains: `10<=S[length]<=50
 `,
 		inputFormat: "String",
-		outputFormat: "String",
+		outputFormat: "String of length 2",
 		hiddenTestCase: [
 			{
 				input: "abcdulfghuljkmul",
@@ -183,7 +187,7 @@ S contains only both uppercase and lowercase alphabets
 			},
 			{
 				input: "onafteranyesterday",
-				output: "ter",
+				output: "te",
 			},
 			{
 				input: "mynamemyfriendmybook",

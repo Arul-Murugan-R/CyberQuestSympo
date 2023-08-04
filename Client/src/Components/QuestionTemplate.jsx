@@ -50,6 +50,7 @@ const QuestionTemplate = ({ question }) => {
 				})}
 			<br />
 			<br />
+			Output Format <br /><br />{question.outputFormat}
 			Constraints
 			<br />
 			<br />
