@@ -7,6 +7,7 @@ import {
 	InputLabel,
 	InputAdornment,
 	Button,
+	CircularProgress,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import "./Login.css";
@@ -24,6 +25,7 @@ export default function Login() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [showPassword, setShowPassword] = useState(false);
+	const [loading,setLoading] = useState(false);
 	const [userState, setUserState] = useState({
 		teamName: "",
 		password: "",
@@ -42,6 +44,7 @@ export default function Login() {
 	const loginHandler = async (event) => {
 		try {
 			event.preventDefault();
+			setLoading(true);
 			// console.log(backendUrl, userState);
 			const response = await axios.post(backendUrl + "/user/login", {
 				username: userState.teamName,
@@ -64,11 +67,12 @@ export default function Login() {
 				}
 			);
 			if (hintsResult.status === 200)
-				dispatch(
-					hintActions.setHints({ hints: hintsResult.data.hints })
-				);
-			dispatch(authActions.loginHandler({ user: user }));
 			dispatch(
+				hintActions.setHints({ hints: hintsResult.data.hints })
+				);
+				dispatch(authActions.loginHandler({ user: user }));
+				setLoading(false)
+				dispatch(
 				snackActions.open({
 					content: "Login succcess!",
 					type: "success",
@@ -81,6 +85,7 @@ export default function Login() {
 			return navigate("/");
 		} catch (error) {
 			console.log(error);
+			setLoading(false)
 			if( error.response.status == 400){
 				return dispatch(snackActions.open({
 					content:error.response.data.message,
@@ -158,7 +163,7 @@ export default function Login() {
 					type="submit"
 					onClick={loginHandler}
 				>
-					Login
+					{loading?<CircularProgress />:`Login`}
 				</Button>
 			</FormControl>
 		</div>

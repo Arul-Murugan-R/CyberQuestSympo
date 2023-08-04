@@ -13,6 +13,7 @@ import { programAction } from "./store/ProgramStore";
 import { hintActions } from "./store/HintStore";
 import { useEffect } from "react";
 import { snackActions } from "./store/SnackStore";
+import PageNotFound from './Components/404'
 
 const router = createBrowserRouter([
 	{
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
 				<CustomSnackbar />
 			</>
 		),
+		errorElement:<PageNotFound/>,
 		children: [
 			{
 				index: true,
@@ -49,6 +51,10 @@ const router = createBrowserRouter([
 			},
 		],
 	},
+	{
+		path:'*',
+		element:<PageNotFound/>
+	}
 ]);
 
 let initial = true;

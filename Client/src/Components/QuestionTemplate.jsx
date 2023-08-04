@@ -41,7 +41,13 @@ const QuestionTemplate = ({ question }) => {
 			Input Format
 			<br />
 			<br />
-			{question.inputFormat}
+			{question.inputFormat.split(".").map((text, index) => {
+					return (
+						<span key={`text1${index}`}>
+							{text.trim()}. <br />
+						</span>
+					);
+				})}
 			<br />
 			<br />
 			Constraints

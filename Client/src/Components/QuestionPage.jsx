@@ -239,6 +239,7 @@ export default function QuestionPage() {
 						/>
 						<div>
 							<h3>Output</h3>
+							{loader&&<p style={{color:'whitesmoke'}}>Wait for few seconds until it compile.</p>}
 							<div
 								className={`output ${
 									loader && "outputLoader"

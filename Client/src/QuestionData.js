@@ -115,11 +115,11 @@ S contains only both uppercase and lowercase alphabets
 		sampleInput: "3\napple ape april",
 		sampleOutput: "ap",
 		explanation:
-			"The given string has spaces, numbers, and special characters. On removing the unwanted characters, we get the final output as ‘HelloThisisalongstringwithspecialcharacters’",
+			"In the given input, the list of strings ‘apple’, ‘ape’, and ‘april’ has ‘ap’ in common. Hence, return the sub-string ‘ap’",
 		constrains: `2<=N<=10.
 3<=String[length]<=10`,
 		inputFormat: `Integer N.
-Array - contains N strings separated by space.
+Array - contains N strings separated by space
 `,
 		outputFormat: "String",
 	},
