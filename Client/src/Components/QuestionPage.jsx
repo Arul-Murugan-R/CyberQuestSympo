@@ -41,7 +41,7 @@ export default function QuestionPage() {
 	const [sampleInput, setSampleInput] = useState("");
 	const [compileError, setCompileError] = useState();
 	const question = questionsData[questionNo - 1];
-
+	
 	useEffect(() => {
 		if (questionNo < 0 || questionNo > 6) {
 			dispatch(
@@ -156,7 +156,6 @@ export default function QuestionPage() {
 
 		try {
 			const response = await axios.request(options);
-			console.log(response);
 			setCompiledCode(response.data.output);
 			setLoader(false);
 		} catch (error) {
@@ -171,7 +170,6 @@ export default function QuestionPage() {
 		setCompileError(null);
 		try {
 			for (const i of limitArray) {
-				const t3 = Date.now();
 				const response = await axios.post(
 					serverUrl + "/program/submit",
 					{
@@ -182,7 +180,6 @@ export default function QuestionPage() {
 						limit: i,
 					}
 				);
-				console.log(Date.now() - t3);
 				if (response.status === 202) {
 					setLoader(false);
 					return setCompiledCode(response.data.message);
@@ -198,7 +195,9 @@ export default function QuestionPage() {
 					return setCompiledCode(response.data.message);
 				}
 				if (response.status === 200) continue;
-				else return setCompileError(response.data.message);
+				else{ 
+					setLoader(false);
+					return setCompileError(response.data.message);}
 			}
 		} catch (e) {
 			dispatch(
