@@ -16,6 +16,8 @@ import { hintActions } from "../store/HintStore";
 let timer = setTimeout(() => null, 1000);
 const serverUrl = import.meta.env.VITE_BACKEND_URL;
 
+const limitArray = [1, 2, 3, 4, 5];
+
 const options = {
 	method: "POST",
 	url: import.meta.env.VITE_RAPID_API_URL,
@@ -74,8 +76,10 @@ export default function QuestionPage() {
 	};
 
 	const [actualCode, setActualCode] = useState(() => loadCode().convert);
-	const [language, setLanguage] = useState(() =>loadCode().language);
-	const [compilerId, setCompilerId] = useState(() => loadCode().filteredCodeId);
+	const [language, setLanguage] = useState(() => loadCode().language);
+	const [compilerId, setCompilerId] = useState(
+		() => loadCode().filteredCodeId
+	);
 
 	useEffect(() => {
 		if (!isLoggedin) {
@@ -152,7 +156,7 @@ export default function QuestionPage() {
 
 		try {
 			const response = await axios.request(options);
-			console.log(response)
+			console.log(response);
 			setCompiledCode(response.data.output);
 			setLoader(false);
 		} catch (error) {
@@ -166,24 +170,36 @@ export default function QuestionPage() {
 		setLoader(true);
 		setCompileError(null);
 		try {
-			const response = await axios.post(serverUrl + "/program/submit", {
-				language,
-				code: actualCode,
-				questionNo,
-				userId,
-			});
-
-			if (response.status === 200 || response.status === 202)
-				setCompiledCode(response.data.message);
-			if (response.status === 200)
-				dispatch(
-					hintActions.addHint({
-						hint: response.data.hint,
-						questionNo: response.data.questionNo,
-					})
+			for (const i of limitArray) {
+				const t3 = Date.now();
+				const response = await axios.post(
+					serverUrl + "/program/submit",
+					{
+						language,
+						code: actualCode,
+						questionNo,
+						userId,
+						limit: i,
+					}
 				);
-			else if (response.status === 201)
-				setCompileError(response.data.message);
+				console.log(Date.now() - t3);
+				if (response.status === 202) {
+					setLoader(false);
+					return setCompiledCode(response.data.message);
+				}
+				if (i === 5 && response.status === 200) {
+					dispatch(
+						hintActions.addHint({
+							hint: response.data.hint,
+							questionNo: response.data.questionNo,
+						})
+					);
+					setLoader(false);
+					return setCompiledCode(response.data.message);
+				}
+				if (response.status === 200) continue;
+				else return setCompileError(response.data.message);
+			}
 		} catch (e) {
 			dispatch(
 				snackActions.open({ content: "Error occured!", type: "error" })
@@ -239,7 +255,18 @@ export default function QuestionPage() {
 						/>
 						<div>
 							<h3>Output</h3>
-							{loader&&<p style={{color:'whitesmoke'}}>Wait for few seconds until it compile.</p>}
+
+							<p
+								style={{
+									color: "whitesmoke",
+									visibility: `${
+										loader ? "visible" : "hidden"
+									}`,
+								}}
+							>
+								Running test cases!
+							</p>
+
 							<div
 								className={`output ${
 									loader && "outputLoader"

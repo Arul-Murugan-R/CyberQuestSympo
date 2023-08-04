@@ -76,7 +76,7 @@ module.exports.getAllPrograms = async (req, res, next) => {
 
 module.exports.submitProgram = async (req, res, next) => {
 	try {
-		const { language, code, questionNo, userId } = req.body;
+		const { language, code, questionNo, userId, limit } = req.body;
 		let pass = true;
 
 		if (language === "c") {
@@ -93,19 +93,16 @@ module.exports.submitProgram = async (req, res, next) => {
 				(item) => item.questionNo === questionNo
 			) === -1
 		) {
-			for (const item of questionsData[questionNo - 1].hiddenTestCase) {
-				options.data.code = code;
-				options.data.input = item.input;
+			const item =
+				questionsData[questionNo - 1].hiddenTestCase[limit - 1];
+			options.data.code = code;
+			options.data.input = item.input;
 
-				const response = await axios.request(options);
-				console.log(response.data)
-				if (response.data.output.replaceAll("\n", "") !== item.output) {
-					console.log(response.data.output,response.data.output.replaceAll("\n", ""));
-					pass = false;
-					break;
-				}
-			}
-			if (pass) {
+			const response = await axios.request(options);
+			if (response.data.output.replaceAll("\n", "") !== item.output)
+				pass = false;
+
+			if (pass && limit === 5) {
 				user.hintsFound.push({
 					hint: questionsData[questionNo - 1].finalOutput,
 					questionNo,
@@ -116,7 +113,11 @@ module.exports.submitProgram = async (req, res, next) => {
 					hint: questionsData[questionNo - 1].finalOutput,
 					questionNo,
 				});
-			}
+			} else if (pass)
+				return res.status(200).json({
+					message: "Test case passed!",
+				});
+
 			return res.status(201).json({
 				message: "Hidden test case failure!",
 			});
