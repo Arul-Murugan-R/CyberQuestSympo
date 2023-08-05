@@ -191,6 +191,10 @@ export default function QuestionPage() {
 							questionNo: response.data.questionNo,
 						})
 					);
+					dispatch(snackActions.open({
+						content:'Successfully found a new hint!!',
+						type:'success'
+					}))
 					setLoader(false);
 					return setCompiledCode(response.data.message);
 				}

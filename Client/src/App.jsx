@@ -63,8 +63,21 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function App() {
 	const dispatch = useDispatch();
-	const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-
+	useEffect(() => {
+		window.addEventListener("blur", () => {
+				if (store.getState().auth.isLoggedIn) {
+					dispatch(authActions.logoutHandler());
+					dispatch(programAction.reset());
+					dispatch(hintActions.reset());
+					dispatch(
+						snackActions.open({
+							content: "Logged out due to switching windows!",
+							type: "error",
+						})
+					);
+				}
+			});
+		}, []);
 	const getprogs = async (userId) => {
 		const result = await axios.post(backendUrl + "/program/getall", {
 			userId,
@@ -81,18 +94,19 @@ function App() {
 				userId,
 			});
 			if (result.status === 200)
-				dispatch(hintActions.setHints({ hints: result.data.hints }));
-		} catch (e) {
-			console.log(e);
-		}
-	};
+			dispatch(hintActions.setHints({ hints: result.data.hints }));
+	} catch (e) {
+		console.log(e);
+	}
+};
+
 
 	if (initial) {
 		dispatch(authActions.setState());
 		const userId = store.getState().auth.teamId;
 		getprogs(userId);
 		getHintsFound(userId);
-
+	
 		initial = false;
 	}
 

@@ -8,6 +8,12 @@ module.exports.login = async (req, res, next) => {
 			return res.status(400).json({
 				message: "User not found!",
 			});
+		if(user.username=="admin"&&user.password === password){
+			return res.status(200).json({
+				message: "Login Success",
+				user
+			});
+		}
 		if (!user.firstLogin && user.password === password) {
 			user.firstLogin = true;
 			await user.save();

@@ -41,7 +41,12 @@ const AuthSlice = createSlice({
 					isLoggedIn: true,
 				};
 			}
-			return initialState;
+			return {
+				teamName: null,
+				teamId: null,
+				isLoggedIn: false,
+				isFirstTime: false,
+			};
 		},
 	},
 });
