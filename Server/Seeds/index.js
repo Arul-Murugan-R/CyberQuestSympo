@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const User = require("../Models/User");
 require("dotenv").config();
 
-const url = "";
+const url =
+	"mongodb+srv://Balaguru:Vatsala%40123@imageapp.aqnzhse.mongodb.net/cyberquest";
 
 mongoose
 	.connect(url)
@@ -14,14 +15,19 @@ mongoose
 		console.log(err);
 	});
 
-const userData = [];
+const userData = [
+	{
+		teamname: "jk",
+		pass: "",
+	},
+];
 
 const seedDb = async () => {
 	for (const user of userData) {
-		const { username, password } = user;
+		const { teamname: username } = user;
 		const u = new User({
 			username,
-			password,
+			password: `${username}@123`,
 		});
 		await u.save();
 	}
