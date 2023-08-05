@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { snackActions } from "../../store/SnackStore";
 import { useState } from "react";
+import store from "../../store/redux";
 
 const CustomSnackbar = (props) => {
 	const dispatch = useDispatch();
@@ -42,7 +43,7 @@ const CustomSnackbar = (props) => {
 						severity={type}
 						sx={{ width: "100%" }}
 					>
-						{message}
+						{open ? message : ""}
 					</Alert>
 				</Snackbar>,
 				document.getElementById("root")
